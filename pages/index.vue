@@ -1,11 +1,16 @@
 <template>
-  <header class="w-full h-16 flex justify-center bg-white border-0 ring-1 ring-inset ring-gray-200 fixed z-10">
-    <div class="w-full max-w-4xl px-8 flex flex-row items-center justify-between">
-      <a href="/">PCCompuestos</a>
-      <div>
-        <a href="signup">Sign up</a>
-      </div>
-    </div>
-  </header>
-  <h1 class="pt-20 text-blue-500">Holaa</h1>
+  <Header></Header>
+  <div class="w-full pt-20" style="background-image: url('../images/banner-gaming.jpg');">
+    <div class="w-full h-96"></div>
+    <!--<img src="../public/images/banner-gaming.jpg">-->
+  </div>
+  <div class="h-20">
+    <IconSearch class="h-20 w-20"/>
+  </div>
+  <button type="button" background-color=#D3D3D3 onclick="">Buscar...</button>
+  <Footer></Footer>
 </template>
+
+<script>
+  import { IconSearch } from '@tabler/icons-vue';
+</script>
