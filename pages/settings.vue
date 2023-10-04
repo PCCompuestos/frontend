@@ -2,7 +2,7 @@
   <Header></Header>
   <Main>
     <div class="w-full max-w-4xl p-8 flex flex-col items-center">
-      <h1 class="text-center">Regístrarse</h1>
+      <h1 class="text-center">Ajustes</h1>
       <div class="py-5 w-80 flex flex-col items-center">
         <input 
           type="text" 
@@ -16,10 +16,8 @@
           placeholder="Contraseña" 
           required
         >
-        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white">Regístrarme</button>
+        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white">Cambiar</button>
       </div>
-      <p>Ya tengo cuenta, <a href="login" class="underline text-primary">iniciar sesión</a>.</p>
     </div>
   </Main>
-  <Footer></Footer>
 </template>
