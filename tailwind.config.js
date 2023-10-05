@@ -11,10 +11,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        'primary': '#f97316',
+        'primary': '#22c55e',
+        
       },
     },
   },
   plugins: [],
 }
-
