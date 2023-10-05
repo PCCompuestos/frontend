@@ -1,5 +1,5 @@
 <template>
-  <Header></Header>
+  <HeaderIn></HeaderIn>
   <Main>
     <div class="w-full max-w-4xl p-8 flex flex-col items-center">
       <h1 class="text-center">Ajustes</h1>
