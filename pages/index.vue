@@ -12,6 +12,7 @@
       <section class="w-full max-w-4xl p-8">
         <h2 class="text-center text-3xl">Más Vendidos</h2>
         <div class="py-6 flex flex-row justify-between">
+          <!-- Aquí pondremos los ID de los productos con más ventas. Ejemplo: PC_HP_i7 -->
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
