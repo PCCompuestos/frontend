@@ -16,10 +16,16 @@
           placeholder="Contraseña" 
           required
         >
-        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white">Regístrarme</button>
+        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="goToDashboard">Regístrarme</button>
       </div>
       <p>Ya tengo cuenta, <a href="login" class="underline text-primary">iniciar sesión</a>.</p>
     </div>
   </Main>
   <Footer></Footer>
 </template>
+
+<script setup>
+function goToDashboard() {
+  window.location.href = 'dashboard';
+}
+</script>
