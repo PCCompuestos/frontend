@@ -18,7 +18,7 @@
           <label><b>Cantidad</b></label>
           <input type="number" value="1" min="1" max="10">
         </div>
-        <a href="../pago" class="bg-primary p-2.5 my-3 rounded-lg font-bold text-white">Comprar</a>
+        <a href="../carrito" class="bg-primary p-2.5 my-3 rounded-lg font-bold text-white">Comprar</a>
       </div>
     </div>
   </Main>
