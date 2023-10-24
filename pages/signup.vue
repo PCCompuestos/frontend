@@ -9,14 +9,16 @@
           class="w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg " 
           placeholder="Email o nombre de usuario" 
           required
+          :value="formData.email"
         >
         <input 
           type="password" 
           class=" w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg" 
           placeholder="Contraseña" 
           required
+          :value="formData.password"
         >
-        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="goToDashboard">Regístrarme</button>
+        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="signup">Regístrarme</button>
       </div>
       <p>Ya tengo cuenta, <a href="login" class="underline text-primary">iniciar sesión</a>.</p>
     </div>
@@ -25,7 +27,23 @@
 </template>
 
 <script setup>
-function goToDashboard() {
-  window.location.href = 'dashboard';
+const formData = ref({
+  name: 'Eindres',
+  password: '',
+  email: '',
+  address: 'C/ EINA',
+})
+
+async function signup() {
+  //window.location.href = 'dashboard';
+  let result = await useFetch('http://localhost:3001/users', {
+    method: 'post',
+    body: {
+      name: formData.value.name,
+      password: formData.value.password,
+      email: formData.value.email,
+      address: formData.value.address
+    }})
+  console.log(result)
 }
 </script>
