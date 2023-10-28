@@ -7,16 +7,23 @@
         <input 
           type="text" 
           class="w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg " 
-          placeholder="Email o nombre de usuario" 
+          placeholder="Nombre" 
           required
-          :value="formData.email"
+          v-model="formData.name"
+        >
+        <input 
+          type="text" 
+          class="w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg " 
+          placeholder="Email" 
+          required
+          v-model="formData.email"
         >
         <input 
           type="password" 
           class=" w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg" 
           placeholder="Contraseña" 
           required
-          :value="formData.password"
+          v-model="formData.password"
         >
         <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="signup">Regístrarme</button>
       </div>
@@ -28,14 +35,15 @@
 
 <script setup>
 const formData = ref({
-  name: 'Eindres',
+  name: '',
   password: '',
   email: '',
-  address: 'C/ EINA',
+  address: '',
 })
 
 async function signup() {
   //window.location.href = 'dashboard';
+  console.log(formData.value)
   let result = await useFetch('http://localhost:3001/users', {
     method: 'post',
     body: {
@@ -44,6 +52,8 @@ async function signup() {
       email: formData.value.email,
       address: formData.value.address
     }})
-  console.log(result)
+  if (result.status._value == "success") {
+    alert('Te has registrado exitosamente')
+  }
 }
 </script>
