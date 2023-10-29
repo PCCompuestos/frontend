@@ -43,7 +43,6 @@ const formData = ref({
 
 async function signup() {
   //window.location.href = 'dashboard';
-  console.log(formData.value)
   let result = await useFetch('http://localhost:3001/users', {
     method: 'post',
     body: {
@@ -51,7 +50,8 @@ async function signup() {
       password: formData.value.password,
       email: formData.value.email,
       address: formData.value.address
-    }})
+    }
+  })
   if (result.status._value == "success") {
     alert('Te has registrado exitosamente')
   }

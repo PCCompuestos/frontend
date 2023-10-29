@@ -31,12 +31,13 @@
           <p>Purchase date: {{ order.purchasedate }}</p>
           <p>Purchase time: {{ order.purchasetime }}</p>
         </div>
-        <div v-if="selected == 'users'" v-for="user in users" class="card">
+        <div v-if="selected == 'users'" v-for="user in users" class="card" >
           <p>UserID: {{ user.id }}</p>
           <p>Name: {{ user.name }}</p>
           <p>Email: {{ user.email }}</p>
           <p>Address: {{ user.address }}</p>
           <p>IsAdmin: {{ user.isadmin }}</p>
+          <button class="bg-primary" @click="removeUser(user.id)">Eliminar usuario</button>
         </div>
       </div>
     </div>
@@ -50,9 +51,14 @@
 </style>
 
 <script setup>
-import { ref } from 'vue'
-
 const selected = ref('users')
 const { data: orders } = await useFetch('http://localhost:3001/orders')
 const { data: users } = await useFetch('http://localhost:3001/users')
+
+async function removeUser(id) {
+  await useFetch('http://localhost:3001/users/' + id, {
+    method: 'delete'
+  })
+  users.value = users.value.filter(user => user.id !== id);
+}
 </script>
