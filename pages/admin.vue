@@ -24,12 +24,19 @@
         <!--<div class="h-52 w-52 mr-8 bg-gray-100"></div>
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>-->
-        <div v-if="selected == 'orders'" v-for="order in orders" class="card">
+        <div v-if="selected == 'components'" v-for="component in components" class="card">
+          <p>Code: {{ component.code }}</p>
+          <p>Name: {{ component.name }}</p>
+          <p>Quantity: {{ component.quantity }}</p>
+          <p>Price: {{ component.price }}</p>
+          <button class="bg-primary" @click="removeComponent(component.code)">Eliminar componente</button>
+        </div><div v-if="selected == 'orders'" v-for="order in orders" class="card">
           <p>OrderID: {{ order.id }}</p>
           <p>User: {{ order.userid }}</p>
           <p>Quantity: {{ order.quantity }}</p>
           <p>Purchase date: {{ order.purchasedate }}</p>
           <p>Purchase time: {{ order.purchasetime }}</p>
+          <button class="bg-primary" @click="removeOrder(order.id)">Eliminar pedido</button>
         </div>
         <div v-if="selected == 'users'" v-for="user in users" class="card" >
           <p>UserID: {{ user.id }}</p>
@@ -52,6 +59,7 @@
 
 <script setup>
 const selected = ref('users')
+const { data: components } = await useFetch('http://localhost:3001/components')
 const { data: orders } = await useFetch('http://localhost:3001/orders')
 const { data: users } = await useFetch('http://localhost:3001/users')
 
@@ -61,4 +69,20 @@ async function removeUser(id) {
   })
   users.value = users.value.filter(user => user.id !== id);
 }
+
+async function removeOrder(id) {
+  await useFetch('http://localhost:3001/orders/' + id, {
+    method: 'delete'
+  })
+  orders.value = orders.value.filter(order => order.id !== id);
+}
+
+// No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
+async function removeComponent(code) {
+  await useFetch('http://localhost:3001/components/' + code, {
+    method: 'delete'
+  })
+  components.value = components.value.filter(component => component.code !== code);
+}
+
 </script>
