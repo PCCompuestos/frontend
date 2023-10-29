@@ -59,6 +59,6 @@ async function removeUser(id) {
   await useFetch('http://localhost:3001/users/' + id, {
     method: 'delete'
   })
-  users.value = users.value.filter(user => user.id !== id);
+  users.value = users.value.filter(user => user.id !== id)
 }
 </script>
