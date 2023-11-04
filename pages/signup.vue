@@ -42,7 +42,6 @@ const formData = ref({
 })
 
 async function signup() {
-  //window.location.href = 'dashboard';
   let result = await useFetch('http://localhost:3001/users', {
     method: 'post',
     body: {
@@ -54,6 +53,7 @@ async function signup() {
   })
   if (result.status._value == "success") {
     alert('Te has registrado exitosamente')
+    window.location.href = 'login';
   }
 }
 </script>

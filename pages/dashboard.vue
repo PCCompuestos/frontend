@@ -1,5 +1,5 @@
 <template>
-  <HeaderIn></HeaderIn>
+  <Header></Header>
   <Main class="h-screen">
     <div class="w-full h-full flex flex-row">
       <div class="h-full flex-none w-52 flex flex-col border-r">
@@ -13,8 +13,7 @@
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>
       </div>
     </div>
-    <p>Is logged in?: {{ store.isLoggedIn }}</p>
-      <p>Token: {{ store.token }}</p>
+    <p>Token: {{ store.token }}</p>
   </Main>
 </template>
 
