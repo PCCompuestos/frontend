@@ -9,14 +9,16 @@
           class="w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg " 
           placeholder="Email" 
           required
+          v-model="formData.email"
         >
         <input 
           type="password" 
           class=" w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg" 
           placeholder="Contraseña" 
           required
+          v-model="formData.password"
         >
-        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="handleLogin">Entrar</button>
+        <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="login">Entrar</button>
       </div>
       <p>Aún no tengo cuenta, <a href="signup" class="underline text-primary">regístrarme</a>.</p>
     </div>
@@ -25,7 +27,39 @@
 </template>
 
 <script setup>
-let userIndex = 0;
+import { useUserStore } from "~/stores"
+const store = useUserStore()
+
+const formData = ref({
+  email: '',
+  password: ''
+})
+
+async function login() {
+  let result = await useFetch('http://localhost:3001/users/login', {
+    method: 'post',
+    body: {
+      email: formData.value.email,
+      password: formData.value.password
+    }
+  })
+  if (result.status._value == "success") {
+    const dataValue = result.data._value
+    if (dataValue == 'incorrect email or password') {
+      alert('Email o contraseña incorrectos.')
+    } else {
+      // Sucessful log in
+      store.isLoggedIn = true
+      store.token = dataValue
+      console.log(store.token)
+      alert('Has iniciado sesión correctamente.')
+      await navigateTo('/dashboard')
+    }
+  } else {
+    alert('Error al iniciar sesión.')
+  }
+}
+/*let userIndex = 0;
 
 // Function to check if a user with the given email exists
 async function userExists(email) {
@@ -87,5 +121,5 @@ async function handleLogin() {
 }
 
 // Call the handleLogin function when needed, e.g., on button click
-// Example: <button @click="handleLogin">Iniciar sesión</button>
+// Example: <button @click="handleLogin">Iniciar sesión</button>*/
 </script>

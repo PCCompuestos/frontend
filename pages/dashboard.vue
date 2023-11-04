@@ -13,5 +13,12 @@
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>
       </div>
     </div>
+    <p>Is logged in?: {{ store.isLoggedIn }}</p>
+      <p>Token: {{ store.token }}</p>
   </Main>
 </template>
+
+<script setup>
+import { useUserStore } from "~/stores"
+const store = useUserStore()
+</script>
