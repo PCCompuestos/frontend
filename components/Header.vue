@@ -4,7 +4,8 @@
       <a href="/" class="font-bold">PCCompuestos</a>
       <div>
         <a v-if="!store.token" href="login">Iniciar sesión</a>
-        <a v-else href="#" @click="logout">Cerrar sesión</a>
+        <a v-if="store.token" href="dashboard" class="pr-6">Mi cuenta</a>
+        <a v-if="store.token" href="#" @click="logout">Cerrar sesión</a>
       </div>
     </div>
   </header>

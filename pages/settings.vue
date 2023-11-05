@@ -58,6 +58,8 @@
 </template>
 
 <script setup>
+//FALTA IMPLEMENTAR QUE EL CAMBIO SE HAGA EFECTIVO EN LA BD
+
 const formData1 = ref({
   name: '',
   password: '',
@@ -70,18 +72,10 @@ const formData2 = ref({
   newPassword: '',
 })
 
+const { data: users } = await useFetch('http://localhost:3001/users')
 let userIndex = 0;
 
 async function userExists(user) {
-  const { data: users } = await useFetch('http://localhost:3001/users', {
-    method: 'get',
-    body: {
-      name: formData1.value.name,
-      name: formData2.value.name,
-      password: formData1.value.password,
-      password: formData2.value.password,
-    }
-  });
 
   for (let i = 0; i < users._rawValue.length; i++) {
     if (users._rawValue[i].name == user) {
@@ -94,7 +88,6 @@ async function userExists(user) {
 }
 
 async function passwordMatches(password) {
-  const { data: users } = await useFetch('http://localhost:3001/users');
 
   if (users._rawValue[userIndex].password == password) {
     return true; // Password matches
@@ -106,10 +99,9 @@ async function passwordMatches(password) {
 
 // Function to handle the username change
 async function handleUsernameChange() {
-  const username = formData1.name;
-  const password = formData1.password;
-  const newUsername = formData1.newUserName;
-
+  const username = formData1.value.name;
+  const password = formData1.value.password;
+  const newUsername = formData1.value.newUserName;
 
   // Check if the username exists and the password matches
   if (await userExists(username)) {
@@ -118,51 +110,36 @@ async function handleUsernameChange() {
       // return true;
     } else {
       // Display an alert for incorrect username or password
-      alert('Usuario o contraseña incorrectos. Por favor, verifica e intenta de nuevo.');
+      alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
     }
   } else {
     // Display an alert for incorrect username 
-    // alert('No existe ningún usuario con ese username/email.');
+    alert('No existe ningún usuario con ese username.');
   }
-
 }
 
 
-// Function changeUsername() that uses the previous function handleUsernameChange(), 
-// if it returns true, makes effectives the changes in the database
-// async function changeUsername() {
-//   if (await handleUsernameChange()) {
-//     const { data: users } = await useFetch('http://localhost:3001/users');
-//     const user = users._rawValue[userIndex];
-//     user.name = newUsernameInput.value;
-//     await useFetch('http://localhost:3001/users/' + user.id, {
-//       method: 'put',
-//       body: JSON.stringify(user)
-//     })
-//   }
-// }
-
 // Function to handle the password change
 async function handlePasswordChange() {
-  const username = usernameChangeInput.value;
-  const password = passwordChangeInput.value;
-  const newPassword = newPasswordInput.value;
+  const username = formData2.value.name;
+  const password = formData2.value.password;
+  const newPassword = formData2.value.newPassword;
 
   // Perform the verification logic here
   // You can use the fetched data from the server to verify the username and password
 
-  // Example: Fetch user data from the server
-  const { data: users } = await useFetch('http://localhost:3001/users');
-
   // Check if the username exists and the password matches
-  const user = users._rawValue.find(user => (user.email === username || user.name === username) && user.password === password);
-
-  if (user) {
-    // Username and password are correct, you can proceed with the password change logic
-    console.log(`Changing password for user ${username}`);
+  if (await userExists(username)) {
+    if (await passwordMatches(password)) {
+      console.log(`Changing password from ${password} to ${newPassword}`);
+      // return true;
+    } else {
+      // Display an alert for incorrect username or password
+      alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
+    }
   } else {
-    // Display an alert for incorrect username or password
-    alert('Usuario o contraseña incorrectos. Por favor, verifica e intenta de nuevo.');
+    // Display an alert for incorrect username 
+    alert('No existe ningún usuario con ese username.');
   }
 }
 </script>
