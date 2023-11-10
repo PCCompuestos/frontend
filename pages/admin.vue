@@ -46,39 +46,52 @@
             <Button @click="addProduct()">Añadir producto</Button>
           </div><br>
           <p class="font-bold">LISTADO DE PRODUCTOS:</p>
-          <div v-for="product in products" class="card">
-            <p>Name: {{ product.name }}</p>
-            <p>Description: {{ product.description }}</p>
-            <p>Quantity: {{ product.quantity }}</p>
-            <p>Price: {{ product.price }}</p>
-            <Button @click="removeProduct(product.id)">Eliminar producto</Button>
+          <div v-if="selected == 'products'">
+            <div v-for="product in products" class="card">
+              <p>Name: {{ product.name }}</p>
+              <p>Description: {{ product.description }}</p>
+              <p>Quantity: {{ product.quantity }}</p>
+              <p>Price: {{ product.price }}</p>
+              <Button @click="removeProduct(product.id)">Eliminar producto</Button>
+            </div>
+            <p v-if="products.length == 0">No hay productos.</p>
           </div>
         </div>
-        <div v-if="selected == 'components'" v-for="component in components" class="card">
-          <p><b>Code: {{ component.code }}</b></p>
-          <p>Name: {{ component.name }}</p>
-          <p>Quantity: {{ component.quantity }}</p>
-          <p>Price: {{ component.price }}</p>
-          <Button @click="removeComponent(component.code)">Eliminar componente</Button>
+        <div v-if="selected == 'components'">
+          <div v-for="component in components" class="card">
+            <p><b>Code: {{ component.code }}</b></p>
+            <p>Name: {{ component.name }}</p>
+            <p>Quantity: {{ component.quantity }}</p>
+            <p>Price: {{ component.price }}</p>
+            <Button @click="removeComponent(component.code)">Eliminar componente</Button>
+          </div>
+          <p v-if="components.length == 0">No hay componentes.</p>
         </div>
-        <div v-if="selected == 'orders'" v-for="order in orders" class="card">
-          <p><b>OrderID: {{ order.id }}</b></p>
-          <p>User: {{ order.userid }}</p>
-          <p>Quantity: {{ order.quantity }}</p>
-          <p>Purchase date: {{ order.purchasedate }}</p>
-          <p>Purchase time: {{ order.purchasetime }}</p>
-          <Button @click="removeOrder(order.id)">Eliminar pedido</Button>
+        <div v-if="selected == 'orders'">
+          <div v-for="order in orders" class="card">
+            <p><b>OrderID: {{ order.id }}</b></p>
+            <p>User: {{ order.userid }}</p>
+            <p>Quantity: {{ order.quantity }}</p>
+            <p>Purchase date: {{ order.purchasedate }}</p>
+            <p>Purchase time: {{ order.purchasetime }}</p>
+            <Button @click="removeOrder(order.id)">Eliminar pedido</Button>
+          </div>
+          <p v-if="orders.length == 0">No hay pedidos.</p>
         </div>
-        <div v-if="selected == 'users'" v-for="user in users" class="card" >
-          <p><b>UserID: {{ user.id }}</b></p>
-          <p>Name: {{ user.name }}</p>
-          <p>Email: {{ user.email }}</p>
-          <p>Address: {{ user.address }}</p>
-          <p>IsAdmin: {{ user.isadmin }}</p>
-          <!-- Hacer que entre los dos botones haya una separación. No sé si es por la clase "card" -->
-          <Button @click="convertToAdmin(user)">Establecer administrador</Button>
-          <Button @click="removeUser(user.id)">Eliminar usuario</Button>
+        <div v-if="selected == 'users'">
+          <div v-for="user in users" class="card" >
+            <p><b>UserID: {{ user.id }}</b></p>
+            <p>Name: {{ user.name }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Address: {{ user.address }}</p>
+            <p>IsAdmin: {{ user.isadmin }}</p>
+            <!-- Hacer que entre los dos botones haya una separación. No sé si es por la clase "card" -->
+            <Button @click="convertToAdmin(user)">Establecer administrador</Button>
+            <Button @click="removeUser(user.id)">Eliminar usuario</Button>
+          </div>
+          <p v-if="users.length == 0">No hay usuarios.</p>
         </div>
+        <p></p>
       </div>
     </div>
   </Main>
