@@ -86,7 +86,7 @@
 
 <style setup>
 .card {
-  @apply w-72 h-fit m-2 p-4 border shadow rounded-lg;
+  @apply w-72 h-fit m-2 p-4 border shadow-sm rounded-lg;
 }
 </style>
 
