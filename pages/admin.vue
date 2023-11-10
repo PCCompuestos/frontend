@@ -73,6 +73,9 @@
           </div>
           <p v-if="components.length == 0">No hay componentes.</p>
         </div>
+        <div v-if="selected == 'factory'">
+          <p>Qué carajos es esto.</p>
+        </div>
         <div v-if="selected == 'orders'">
           <div v-for="order in orders" class="card">
             <p><b>OrderID: {{ order.id }}</b></p>

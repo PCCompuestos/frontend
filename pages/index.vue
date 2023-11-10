@@ -12,7 +12,10 @@
       <section class="w-full max-w-4xl p-8">
         <h2 class="text-center text-3xl">Más Vendidos</h2>
         <div class="py-6 flex flex-row justify-between">
-          <!-- Aquí pondremos los ID de los productos con más ventas. Ejemplo: PC_HP_i7 -->
+          <!-- La idea es poner de manera estática los 3 primeros productos de nuestra BD, con su imagen como link -->
+<!--          <a href="products.value.url[0]" class="h-52 w-52"><img src="products.value.image[0]"></a>   -->
+<!--          <a href="products.value.url[1]" class="h-52 w-52"><img src="products.value.image[1]"></a>   -->
+<!--          <a href="products.value.url[2]" class="h-52 w-52"><img src="products.value.image[2]"></a>   -->
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
@@ -20,7 +23,6 @@
       </section>
       <section class="w-full max-w-4xl p-8">
         <h2 class="text-center text-3xl">Búsqueda personalizada</h2>
-        <!--<p class="py-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>-->
         <div>
           <label>CPU:</label>
           <Autocomplete :options="cpuOptions" v-model:value="cpuValue"></Autocomplete>
@@ -44,17 +46,18 @@
       </section>
     </div>
   </Main>
-  <!--<button type="button" background-color=#D3D3D3 onclick="">Buscar...</button>-->
   <Footer></Footer>
 </template>
 
 <script setup>
 import { IconSearch } from '@tabler/icons-vue';
 
+// const { data: products } = await useFetch('http://localhost:3001/products')
 const cpuValue = ref('intel-core-i7')
 const ramValue = ref('4-GB')
 const graphicsValue = ref('geforce-rtx-4070-series')
 const storageValue = ref('1-tb-ssd')
+
 
 const cpuOptions = [
   { value: 'intel-core-i7', text: 'Intel Core I7', },
