@@ -24,7 +24,6 @@ const formData = ref({
 })
 
 async function login() {
-  console.log(formData)
   let result = await useFetch('http://localhost:3001/users/login', {
     method: 'post',
     body: {

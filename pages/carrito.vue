@@ -42,7 +42,7 @@
 
 
 <template>
-    <HeaderIn></HeaderIn>
+    <Header></Header>
       <Main>
         <ul class="breadcrumb">
         <li><a href="#">Home</a></li>
