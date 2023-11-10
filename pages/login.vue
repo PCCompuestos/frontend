@@ -8,7 +8,7 @@
         <InputText type="password" placeholder="Contraseña" v-model:value="formData.password"></InputText>
         <Button @click="login">Entrar</Button>
       </div>
-      <p>Aún no tengo cuenta, <a href="signup" class="underline text-primary">regístrarme</a>.</p>
+      <p>Aún no tengo cuenta, <a href="signup" class="underline text-primary">registrarme</a>.</p>
     </div>
   </Main>
   <Footer></Footer>
@@ -24,7 +24,6 @@ const formData = ref({
 })
 
 async function login() {
-  console.log(formData)
   let result = await useFetch('http://localhost:3001/users/login', {
     method: 'post',
     body: {
