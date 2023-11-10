@@ -1,5 +1,5 @@
 <template>
-  <HeaderIn></HeaderIn>
+  <Header></Header>
   <Main class="h-screen">
     <div class="w-full h-full flex flex-row">
       <div class="h-full flex-none w-52 flex flex-col border-r">
@@ -43,7 +43,7 @@
             <label for="Price">Price:</label><br>
             <input type="text" id="Price" name="Price" class="border-solid border-2 border-black"
             v-model="formData.price"><br><br>
-            <button class="w-full bg-primary text-center cursor-pointer" @click="addProduct()">Añadir producto</button>
+            <Button @click="addProduct()">Añadir producto</Button>
           </div><br>
           <p class="font-bold">LISTADO DE PRODUCTOS:</p>
           <div v-for="product in products" class="card">
@@ -51,26 +51,26 @@
             <p>Description: {{ product.description }}</p>
             <p>Quantity: {{ product.quantity }}</p>
             <p>Price: {{ product.price }}</p>
-            <button class="bg-primary cursor-pointer" @click="removeProduct(product.id)">Eliminar producto</button>
+            <Button @click="removeProduct(product.id)">Eliminar producto</Button>
           </div>
         </div>
         <div v-if="selected == 'components'" v-for="component in components" class="card">
-          <p>Code: {{ component.code }}</p>
+          <p><b>Code: {{ component.code }}</b></p>
           <p>Name: {{ component.name }}</p>
           <p>Quantity: {{ component.quantity }}</p>
           <p>Price: {{ component.price }}</p>
-          <button class="bg-primary cursor-pointer" @click="removeComponent(component.code)">Eliminar componente</button>
+          <Button @click="removeComponent(component.code)">Eliminar componente</Button>
         </div>
         <div v-if="selected == 'orders'" v-for="order in orders" class="card">
-          <p>OrderID: {{ order.id }}</p>
+          <p><b>OrderID: {{ order.id }}</b></p>
           <p>User: {{ order.userid }}</p>
           <p>Quantity: {{ order.quantity }}</p>
           <p>Purchase date: {{ order.purchasedate }}</p>
           <p>Purchase time: {{ order.purchasetime }}</p>
-          <button class="bg-primary cursor-pointer" @click="removeOrder(order.id)">Eliminar pedido</button>
+          <Button @click="removeOrder(order.id)">Eliminar pedido</Button>
         </div>
         <div v-if="selected == 'users'" v-for="user in users" class="card" >
-          <p>UserID: {{ user.id }}</p>
+          <p><b>UserID: {{ user.id }}</b></p>
           <p>Name: {{ user.name }}</p>
           <p>Email: {{ user.email }}</p>
           <p>Address: {{ user.address }}</p>

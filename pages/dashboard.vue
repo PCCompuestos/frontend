@@ -46,11 +46,16 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: [
+    'auth',
+  ],
+})
+
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 
 const selected = ref('users')
 
 const { data: users } = await useFetch('http://localhost:3001/users')
-
 </script>
