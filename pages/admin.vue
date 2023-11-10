@@ -30,7 +30,7 @@
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>-->
         <div v-if="selected == 'products'" class="pl-4">
           <p class="pb-2 font-bold">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
-          <form class="p-2 border-solid border-2 border-black w-52">
+          <div class="p-2 border-solid border-2 border-black w-52">
             <label for="Name">Name:</label><br>
             <input type="text" id="Name" name="Name" class="border-solid border-2 border-black"
             v-model="formData.Name"><br>
@@ -44,7 +44,7 @@
             <input type="text" id="Price" name="Price" class="border-solid border-2 border-black"
             v-model="formData.Price"><br><br>
             <button class="w-full bg-primary text-center cursor-pointer" @click="addProduct()">Añadir producto</button>
-          </form><br>
+          </div><br>
           <p class="font-bold">LISTADO DE PRODUCTOS:</p>
           <div v-for="product in products" class="card">
             <p>Name: {{ product.name }}</p>
