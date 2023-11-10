@@ -42,7 +42,13 @@
             v-model="formData.Quantity"><br>
             <label for="Price">Price:</label><br>
             <input type="text" id="Price" name="Price" class="border-solid border-2 border-black"
-            v-model="formData.Price"><br><br>
+            v-model="formData.Price"><br>
+            <label for="Url">Url:</label><br>
+            <input type="text" id="Url" name="Url" class="border-solid border-2 border-black"
+            v-model="formData.URL"><br>
+            <label for="Image">Image:</label><br>
+            <input type="text" id="Image" name="Image" class="border-solid border-2 border-black"
+            v-model="formData.Image"><br><br>
             <button class="w-full bg-primary text-center cursor-pointer" @click="addProduct()">Añadir producto</button>
           </div><br>
           <p class="font-bold">LISTADO DE PRODUCTOS:</p>
@@ -51,6 +57,8 @@
             <p>Description: {{ product.description }}</p>
             <p>Quantity: {{ product.quantity }}</p>
             <p>Price: {{ product.price }}</p>
+            <p>Url: {{ product.url }}</p>
+            <p>Image: {{ product.image }}</p>
             <button class="bg-primary cursor-pointer" @click="removeProduct(product.id)">Eliminar producto</button>
           </div>
         </div>
@@ -96,7 +104,9 @@ const formData = ref({
   Name: '',
   Description: '',
   Quantity: '',
-  Price: ''
+  Price: '',
+  URL: '',
+  Image: ''
 })
 
 
@@ -131,7 +141,9 @@ async function addProduct(){
       name: formData.value.Name,
       description: formData.value.Description,
       quantity: formData.value.Quantity,
-      price: formData.value.Price
+      price: formData.value.Price,
+      url: formData.value.URL,
+      image: formData.value.Image
     }
   })
   if (result.status._value == "success") {
