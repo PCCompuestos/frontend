@@ -28,9 +28,6 @@
         <!--<div class="h-52 w-52 mr-8 bg-gray-100"></div>
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>
         <div class="h-52 w-52 mr-8 bg-gray-100"></div>-->
-        <div v-if="selected == 'productsCreation'" class="card">
-          <!-- Formulario para añadir los distintos campos que tiene un producto: ID, Name, Description, Quantity, Price -->
-        </div>
         <div v-if="selected == 'products'" class="pl-4">
           <p class="pb-2 font-bold">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
           <form class="p-2 border-solid border-2 border-black w-52">
