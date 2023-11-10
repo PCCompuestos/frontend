@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+// Protect route against not logged users
 definePageMeta({
   middleware: [
     'auth',
