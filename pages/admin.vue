@@ -1,5 +1,5 @@
 <template>
-  <HeaderIn></HeaderIn>
+  <Header></Header>
   <Main class="h-screen">
     <div class="w-full h-full flex flex-row">
       <div class="h-full flex-none w-52 flex flex-col border-r">
@@ -61,31 +61,41 @@
             <p>Image: {{ product.image }}</p>
             <button class="bg-primary cursor-pointer" @click="removeProduct(product.id)">Eliminar producto</button>
           </div>
+          <p v-if="products.length == 0">No hay productos.</p>
         </div>
-        <div v-if="selected == 'components'" v-for="component in components" class="card">
-          <p>Code: {{ component.code }}</p>
-          <p>Name: {{ component.name }}</p>
-          <p>Quantity: {{ component.quantity }}</p>
-          <p>Price: {{ component.price }}</p>
-          <button class="bg-primary cursor-pointer" @click="removeComponent(component.code)">Eliminar componente</button>
+        <div v-if="selected == 'components'">
+          <div v-for="component in components" class="card">
+            <p><b>Code: {{ component.code }}</b></p>
+            <p>Name: {{ component.name }}</p>
+            <p>Quantity: {{ component.quantity }}</p>
+            <p>Price: {{ component.price }}</p>
+            <button class="bg-primary cursor-pointer" @click="removeComponent(component.code)">Eliminar componente</button>
+          </div>
+          <p v-if="components.length == 0">No hay componentes.</p>
         </div>
-        <div v-if="selected == 'orders'" v-for="order in orders" class="card">
-          <p>OrderID: {{ order.id }}</p>
-          <p>User: {{ order.userid }}</p>
-          <p>Quantity: {{ order.quantity }}</p>
-          <p>Purchase date: {{ order.purchasedate }}</p>
-          <p>Purchase time: {{ order.purchasetime }}</p>
-          <button class="bg-primary cursor-pointer" @click="removeOrder(order.id)">Eliminar pedido</button>
+        <div v-if="selected == 'orders'">
+          <div v-for="order in orders" class="card">
+            <p><b>OrderID: {{ order.id }}</b></p>
+            <p>User: {{ order.userid }}</p>
+            <p>Quantity: {{ order.quantity }}</p>
+            <p>Purchase date: {{ order.purchasedate }}</p>
+            <p>Purchase time: {{ order.purchasetime }}</p>
+            <Button @click="removeOrder(order.id)">Eliminar pedido</Button>
+          </div>
+          <p v-if="orders.length == 0">No hay pedidos.</p>
         </div>
-        <div v-if="selected == 'users'" v-for="user in users" class="card" >
-          <p>UserID: {{ user.id }}</p>
-          <p>Name: {{ user.name }}</p>
-          <p>Email: {{ user.email }}</p>
-          <p>Address: {{ user.address }}</p>
-          <p>IsAdmin: {{ user.isadmin }}</p>
-          <!-- Hacer que entre los dos botones haya una separación. No sé si es por la clase "card" -->
-          <button class="bg-primary cursor-pointer" @click="convertToAdmin(user)">Establecer administrador</button>
-          <button class="bg-primary cursor-pointer" @click="removeUser(user.id)">Eliminar usuario</button>
+        <div v-if="selected == 'users'">
+          <div v-for="user in users" class="card" >
+            <p><b>UserID: {{ user.id }}</b></p>
+            <p>Name: {{ user.name }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Address: {{ user.address }}</p>
+            <p>IsAdmin: {{ user.isadmin }}</p>
+            <!-- Hacer que entre los dos botones haya una separación. No sé si es por la clase "card" -->
+            <Button @click="convertToAdmin(user)">Establecer administrador</Button>
+            <Button @click="removeUser(user.id)">Eliminar usuario</Button>
+          </div>
+          <p v-if="users.length == 0">No hay usuarios.</p>
         </div>
       </div>
     </div>
@@ -94,11 +104,14 @@
 
 <style setup>
 .card {
-  @apply w-52 h-fit m-5;
+  @apply w-64 h-fit m-2 p-4 shadow-sm border rounded-lg;
 }
 </style>
 
 <script setup>
+import { useUserStore } from "~/stores"
+const store = useUserStore()
+const token = store.token
 
 const formData = ref({
   Name: '',
@@ -116,10 +129,12 @@ const { data: components } = await useFetch('http://localhost:3001/components')
 const { data: orders } = await useFetch('http://localhost:3001/orders')
 const { data: users } = await useFetch('http://localhost:3001/users')
 
-
 async function convertToAdmin(user) {
   let result = await useFetch('http://localhost:3001/users/' + user.id, {
     method: 'put',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
     body: {
       name: user.name,
       password: user.password,
@@ -137,6 +152,9 @@ async function convertToAdmin(user) {
 async function addProduct(){
   let result = await useFetch('http://localhost:3001/products', {
     method: 'post',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
     body: {
       name: formData.value.Name,
       description: formData.value.Description,
@@ -153,21 +171,30 @@ async function addProduct(){
 
 async function removeUser(id) {
   await useFetch('http://localhost:3001/users/' + id, {
-    method: 'delete'
+    method: 'delete',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   })
   users.value = users.value.filter(user => user.id !== id)
 }
 
 async function removeOrder(id) {
   await useFetch('http://localhost:3001/orders/' + id, {
-    method: 'delete'
+    method: 'delete',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   })
   orders.value = orders.value.filter(order => order.id !== id);
 }
 
 async function removeProduct(id) {
   await useFetch('http://localhost:3001/products/' + id, {
-    method: 'delete'
+    method: 'delete',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   })
   products.value = products.value.filter(product => product.id !== id);
 }
@@ -175,7 +202,10 @@ async function removeProduct(id) {
 // No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
 async function removeComponent(code) {
   await useFetch('http://localhost:3001/components/' + code, {
-    method: 'delete'
+    method: 'delete',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   })
   components.value = components.value.filter(component => component.code !== code);
 }
