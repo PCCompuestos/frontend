@@ -55,8 +55,11 @@ definePageMeta({
 
 import { useUserStore } from "~/stores"
 const store = useUserStore()
+const token = store.token
+const headers = {'Authorization': `Bearer ${token}`}
 
 const selected = ref('users')
 
-const { data: users } = await useFetch('http://localhost:3001/users')
+const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+console.log(users)
 </script>

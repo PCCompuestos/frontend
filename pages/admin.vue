@@ -53,13 +53,13 @@
           </div><br>
           <p class="font-bold">LISTADO DE PRODUCTOS:</p>
           <div v-for="product in products" class="card">
-            <p>Name: {{ product.name }}</p>
+            <p><b>Name: {{ product.name }}</b></p>
             <p>Description: {{ product.description }}</p>
             <p>Quantity: {{ product.quantity }}</p>
             <p>Price: {{ product.price }}</p>
             <p>Url: {{ product.url }}</p>
             <p>Image: {{ product.image }}</p>
-            <button class="bg-primary cursor-pointer" @click="removeProduct(product.id)">Eliminar producto</button>
+            <Button @click="removeProduct(product.id)">Eliminar producto</Button>
           </div>
           <p v-if="products.length == 0">No hay productos.</p>
         </div>
@@ -69,7 +69,7 @@
             <p>Name: {{ component.name }}</p>
             <p>Quantity: {{ component.quantity }}</p>
             <p>Price: {{ component.price }}</p>
-            <button class="bg-primary cursor-pointer" @click="removeComponent(component.code)">Eliminar componente</button>
+            <Button @click="removeComponent(component.code)">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0">No hay componentes.</p>
         </div>
@@ -104,7 +104,7 @@
 
 <style setup>
 .card {
-  @apply w-64 h-fit m-2 p-4 shadow-sm border rounded-lg;
+  @apply w-64 h-fit my-4 p-4 shadow-sm border rounded-lg;
 }
 </style>
 
@@ -112,6 +112,7 @@
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
+const headers = {'Authorization': `Bearer ${token}`}
 
 const formData = ref({
   Name: '',
@@ -122,19 +123,16 @@ const formData = ref({
   Image: ''
 })
 
-
 const selected = ref('users')
-const { data: products } = await useFetch('http://localhost:3001/products')
-const { data: components } = await useFetch('http://localhost:3001/components')
-const { data: orders } = await useFetch('http://localhost:3001/orders')
-const { data: users } = await useFetch('http://localhost:3001/users')
+const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
+const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
+const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
+const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
 
 async function convertToAdmin(user) {
   let result = await useFetch('http://localhost:3001/users/' + user.id, {
     method: 'put',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
+    headers: headers,
     body: {
       name: user.name,
       password: user.password,
@@ -152,9 +150,7 @@ async function convertToAdmin(user) {
 async function addProduct(){
   let result = await useFetch('http://localhost:3001/products', {
     method: 'post',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
+    headers: headers,
     body: {
       name: formData.value.Name,
       description: formData.value.Description,
@@ -172,9 +168,7 @@ async function addProduct(){
 async function removeUser(id) {
   await useFetch('http://localhost:3001/users/' + id, {
     method: 'delete',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
+    headers: headers
   })
   users.value = users.value.filter(user => user.id !== id)
 }
@@ -182,9 +176,7 @@ async function removeUser(id) {
 async function removeOrder(id) {
   await useFetch('http://localhost:3001/orders/' + id, {
     method: 'delete',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
+    headers: headers
   })
   orders.value = orders.value.filter(order => order.id !== id);
 }
@@ -192,9 +184,7 @@ async function removeOrder(id) {
 async function removeProduct(id) {
   await useFetch('http://localhost:3001/products/' + id, {
     method: 'delete',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
+    headers: headers
   })
   products.value = products.value.filter(product => product.id !== id);
 }
@@ -203,9 +193,7 @@ async function removeProduct(id) {
 async function removeComponent(code) {
   await useFetch('http://localhost:3001/components/' + code, {
     method: 'delete',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
+    headers: headers
   })
   components.value = components.value.filter(component => component.code !== code);
 }
