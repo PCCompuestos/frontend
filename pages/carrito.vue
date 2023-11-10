@@ -44,11 +44,11 @@
 <template>
     <Header></Header>
       <Main>
-        <ul class="breadcrumb">
+        <!-- <ul class="breadcrumb">
         <li><a href="#">Home</a></li>
         <li><a href="#">Productos</a></li>
         <li>Comprar</li>
-        </ul>
+        </ul> -->
 
           <!-- Uso de clases de Tailwind, combinadas con flex -->
           <div class="w-full max-w-4xl p-8 flex flex-col items-center">
