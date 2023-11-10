@@ -9,7 +9,7 @@
         <h1>{{ $route.params.id }}</h1>
         <p class="pt-4 leading-9">
           <b>Gráfica Series</b>: GeForce RTX 3060 Series<br>
-          <b>Almacenamiento SSD</b>: 500 GB SSD<br>
+          <b>Almacenamiento</b>: 500 GB SSD<br>
           <b>Procesador</b>: Intel Core I5<br>
           <b>Memoria Ram</b>: 16GB RAM<br>
           <b>Modelo Sistema Operativo</b>: Sin Sistema operativo <br>
