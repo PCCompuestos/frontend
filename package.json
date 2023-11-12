@@ -19,7 +19,7 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@pinia/nuxt": "^0.5.1",
-    "@tabler/icons-vue": "^2.38.0",
+    "@tabler/icons-vue": "^2.40.0",
     "autoprefixer": "^10.4.16",
     "pinia": "^2.1.7",
     "postcss": "^8.4.31",
