@@ -150,8 +150,6 @@ const { data: components } = await useFetch('http://localhost:3001/components', 
 const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
 const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
 
-console.log(orders)
-
 async function convertToAdmin(user) {
   let result = await useFetch('http://localhost:3001/users/' + user.id, {
     method: 'put',
