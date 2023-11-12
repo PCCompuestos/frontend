@@ -98,22 +98,25 @@
             <div class="col-50 py-5 px-5 w-80 flex flex-col items-center">
                 <p class="w-full font-bold">Tarjeta de crédito</p>
                 <input 
-                    type="text" 
-                    class="input_box" 
-                    placeholder="XXXX-XXXX-XXXX-XXXX" 
-                    required
+                  type="text" 
+                  class="input_box" 
+                  placeholder="XXXX-XXXX-XXXX-XXXX" 
+                  required
+                  v-model="formData1.cardNumber"
                 >
                 <input 
-                    type="text" 
-                    class="input_box" 
-                    placeholder="MM/DD"
-                    required
+                  type="text" 
+                  class="input_box" 
+                  placeholder="MM/DD"
+                  required
+                  v-model="formData1.expirationDate"
                 >
                 <input 
-                    type="password"
-                    class="input_box" 
-                    placeholder="CVV"
-                    required
+                  type="password"
+                  class="input_box" 
+                  placeholder="CVV"
+                  required
+                  v-model="formData1.code"
                 >
                 <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="confirmacionPago">Pagar</button>
             </div>
@@ -127,6 +130,80 @@
   
   
 <script setup>
+
+const formData1 = ref({
+  cardNumber: '',
+  expirationDate: '',
+  code: '',
+})
+
+function confirmacionPago() {
+  if (formData1.value.cardNumber == '' || formData1.value.expirationDate == '' || formData1.value.code == '') {
+    alert('Rellena todos los campos')
+  } else {
+    let wrongNumber = false
+    let wrongDate = false
+    let wrongCode = false
+
+    // Verificar que los datos de tarjeta son 19 carácteres, y a su vez son números los carácteres 1-4, 6-9, 11-14, 16-19.
+    // Formato: XXXX-XXXX-XXXX-XXXX
+    if (formData1.value.cardNumber.length != 19) {
+      wrongNumber = true
+      // console.log("1")
+    } else {
+      let first = formData1.value.cardNumber.substring(0, 4)
+      let firstDash = formData1.value.cardNumber.substring(4, 5)
+      let second = formData1.value.cardNumber.substring(5, 9)
+      let secondDash = formData1.value.cardNumber.substring(9, 10)
+      let third = formData1.value.cardNumber.substring(10, 14)
+      let thirdDash = formData1.value.cardNumber.substring(14, 15)
+      let fourth = formData1.value.cardNumber.substring(15, 19)
+
+      if (isNaN(first) || isNaN(second) || isNaN(third) || isNaN(fourth) || firstDash != '-' || secondDash != '-' || thirdDash != '-') {
+        // console.log("2")
+        wrongNumber = true
+      }
+    }
+
+    // Verificar que la fecha de caducidad son dos números [1-12], una barra y dos números [1-31]
+    if (formData1.value.expirationDate.length != 5) {
+      wrongDate = true
+    } else {
+      let month = formData1.value.expirationDate.substring(0, 2)
+      let day = formData1.value.expirationDate.substring(3, 5)
+      if (isNaN(month) || isNaN(day)) {
+        wrongDate = true
+      } else {
+        if (month < 1 || month > 12 || day < 1 || day > 31) {
+          wrongDate = true
+        }
+      }
+    }
+
+    if (formData1.value.code.length != 3) {
+      wrongCode = true
+    }
+
+    if (wrongNumber == true) {
+      alert('Número de tarjeta incorrecto. Formato: XXXX-XXXX-XXXX-XXXX')
+      // console.log(wrongNumber)
+    }
+
+    if (wrongDate) {
+      alert('Fecha de caducidad incorrecta. Formato: MM/DD')
+    }
+
+    if (wrongCode) {
+      alert('Código de seguridad incorrecto. Formato: XXX')
+    }
+
+    if (!wrongNumber && !wrongDate && !wrongCode){
+      alert('Pago realizado con éxito')
+    }
+  }
+}
+
+
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
