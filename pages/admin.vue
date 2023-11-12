@@ -24,10 +24,7 @@
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
         >Usuarios</div>
       </div>
-      <div class="grow p-8 flex flex-col">
-        <!--<div class="h-52 w-52 mr-8 bg-gray-100"></div>
-        <div class="h-52 w-52 mr-8 bg-gray-100"></div>
-        <div class="h-52 w-52 mr-8 bg-gray-100"></div>-->
+      <div class="grow p-8 flex flex-wrap">
         <div v-if="selected == 'products'" class="pl-4">
           <p class="pb-2 font-bold">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
           <div class="p-2 border-solid border-2 border-black w-52">
@@ -59,17 +56,17 @@
             <p>Price: {{ product.price }}</p>
             <p>Url: {{ product.url }}</p>
             <p>Image: {{ product.image }}</p>
-            <Button @click="removeProduct(product.id)">Eliminar producto</Button>
+            <Button @click="removeProduct(product.id)" class="bg-red-500">Eliminar producto</Button>
           </div>
           <p v-if="products.length == 0">No hay productos.</p>
         </div>
-        <div v-if="selected == 'components'">
+        <div v-if="selected == 'components'" class="card-container">
           <div v-for="component in components" class="card">
             <p><b>Code: {{ component.code }}</b></p>
             <p>Name: {{ component.name }}</p>
             <p>Quantity: {{ component.quantity }}</p>
             <p>Price: {{ component.price }}</p>
-            <Button @click="removeComponent(component.code)">Eliminar componente</Button>
+            <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0">No hay componentes.</p>
         </div>
@@ -83,12 +80,13 @@
             <p>Quantity: {{ order.quantity }}</p>
             <p>Purchase date: {{ order.purchasedate }}</p>
             <p>Purchase time: {{ order.purchasetime }}</p>
-            <Button @click="removeOrder(order.id)">Eliminar pedido</Button>
+            <SelectMenu @change="(status) => updateOrderStatus(order.id, status)" :value="order.status" :options="orderStatusOptions" class="my-2"></SelectMenu>
+            <Button @click="removeOrder(order.id)" class="bg-red-500">Eliminar pedido</Button>
           </div>
           <p v-if="orders.length == 0">No hay pedidos.</p>
         </div>
-        <div v-if="selected == 'users'">
-          <div v-for="user in users" class="card" >
+        <div v-if="selected == 'users'" class="card-container">
+          <div v-for="user in users" class="card">
             <p><b>UserID: {{ user.id }}</b></p>
             <p>Name: {{ user.name }}</p>
             <p>Email: {{ user.email }}</p>
@@ -96,7 +94,7 @@
             <p>IsAdmin: {{ user.isadmin }}</p>
             <!-- Hacer que entre los dos botones haya una separación. No sé si es por la clase "card" -->
             <Button @click="convertToAdmin(user)">Establecer administrador</Button>
-            <Button @click="removeUser(user.id)">Eliminar usuario</Button>
+            <Button @click="removeUser(user.id)" class="bg-red-500">Eliminar usuario</Button>
           </div>
           <p v-if="users.length == 0">No hay usuarios.</p>
         </div>
@@ -106,12 +104,23 @@
 </template>
 
 <style setup>
+.card-container {
+  @apply w-full flex flex-wrap content-start;
+}
+
 .card {
-  @apply w-64 h-fit my-4 p-4 shadow-sm border rounded-lg;
+  @apply w-64 h-fit m-4 p-4 shadow-sm border rounded-lg;
 }
 </style>
 
 <script setup>
+// Protect route against not logged users
+definePageMeta({
+  middleware: [
+    'auth',
+  ],
+})
+
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
@@ -127,10 +136,21 @@ const formData = ref({
 })
 
 const selected = ref('users')
+
+// 'Not prepared', 'In preparation', 'Sent', 'Delivered'
+const orderStatusOptions = [
+  { value: 'Not prepared', text: 'Not prepared', },
+  { value: 'In preparation', text: 'In preparation', },
+  { value: 'Sent', text: 'Sent', },
+  { value: 'Delivered', text: 'Delivered', },
+]
+
 const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
 const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
 const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
 const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+
+console.log(orders)
 
 async function convertToAdmin(user) {
   let result = await useFetch('http://localhost:3001/users/' + user.id, {
@@ -148,7 +168,6 @@ async function convertToAdmin(user) {
     alert('Usuario convertido a administrador')
   }
 }
-
 
 async function addProduct(){
   let result = await useFetch('http://localhost:3001/products', {
@@ -176,6 +195,18 @@ async function removeUser(id) {
   users.value = users.value.filter(user => user.id !== id)
 }
 
+// ORDERS
+async function updateOrderStatus(id, status) {
+  await useFetch('http://localhost:3001/orders/' + id + '/setStatus', {
+    method: 'put',
+    headers: headers,
+    body: {
+      id: id,
+      status: status
+    }
+  })
+}
+
 async function removeOrder(id) {
   await useFetch('http://localhost:3001/orders/' + id, {
     method: 'delete',
@@ -201,4 +232,7 @@ async function removeComponent(code) {
   components.value = components.value.filter(component => component.code !== code);
 }
 
+watch(orders, () => {
+  console.log(orders.value)
+})
 </script>
