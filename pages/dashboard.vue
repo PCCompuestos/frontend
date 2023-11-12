@@ -17,10 +17,13 @@
         >Facturas</div>
         <a href="settings" class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-100">Ajustes</a>
       </div>
-      <div class="grow p-8 flex flex-row">
-        <div class="h-52 w-52 mr-8 bg-gray-100"></div>
-        <div class="h-52 w-52 mr-8 bg-gray-100"></div>
-        <div class="h-52 w-52 mr-8 bg-gray-100"></div>
+      <div class="grow p-8 flex flex-col">
+        <h1 class="pb-5">¡Hola {{ user.name }}!</h1>
+        <div class="grow flex">
+          <div class="h-52 w-52 mr-8 bg-gray-100"></div>
+          <div class="h-52 w-52 mr-8 bg-gray-100"></div>
+          <div class="h-52 w-52 mr-8 bg-gray-100"></div>
+        </div>
       </div>
       <!-- IFS PARA MOSTRAR UNA COSA U OTRA -->
       <div class="grow p-8 flex flex-col">
@@ -41,7 +44,7 @@
         <!-- Ajustes se gestiona en otra página -->
       </div>
     </div>
-    <p>Token: {{ store.token }}</p>
+    <p>Token: {{ token }}</p>
   </Main>
 </template>
 
@@ -56,10 +59,11 @@ definePageMeta({
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
+const user = store.user
 const headers = {'Authorization': `Bearer ${token}`}
 
 const selected = ref('users')
 
-const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
-console.log(users)
+/*const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+console.log(users)*/
 </script>

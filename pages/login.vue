@@ -37,7 +37,8 @@ async function login() {
       alert('Email o contraseña incorrectos.')
     } else {
       // Sucessful log in
-      store.setToken(dataValue)
+      store.setToken(dataValue.token)
+      store.setUser(dataValue.user)
       alert('Has iniciado sesión correctamente.')
       await navigateTo('/dashboard')
     }
