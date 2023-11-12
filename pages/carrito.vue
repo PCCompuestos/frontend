@@ -69,6 +69,7 @@
                         class="input_box" 
                         placeholder="Pepito Pérez Ramos" 
                         required
+                        :value="user.name"
                     >
                 </div>
                 <div class="flex flex-row items-center">
@@ -79,6 +80,7 @@
                         class="input_box" 
                         placeholder="pepito@gmail.com"
                         required
+                        :value="user.email"
                     >
                 </div>
                 <div class="flex flex-row items-center">
@@ -89,6 +91,7 @@
                         class="input_box" 
                         placeholder="c/ Maria de Luna, 22, 1ºA"
                         required
+                        :value="user.address"
                     >
                 </div>
             </div>
@@ -123,8 +126,14 @@
     </template>
   
   
-  <script setup>
-      function confirmacionPago() {
-          alert("Pago exitoso");
-      }
-  </script>
+<script setup>
+import { useUserStore } from "~/stores"
+const store = useUserStore()
+const token = store.token
+const user = store.user
+const shoppingCart = store.shoppingCart
+
+function confirmacionPago() {
+  alert("Pago exitoso");
+}
+</script>
