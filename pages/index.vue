@@ -58,7 +58,6 @@ const ramValue = ref('4-GB')
 const graphicsValue = ref('geforce-rtx-4070-series')
 const storageValue = ref('1-tb-ssd')
 
-
 const cpuOptions = [
   { value: 'intel-core-i7', text: 'Intel Core I7', },
   { value: 'intel-core-i5', text: 'Intel Core I5', },
@@ -89,5 +88,35 @@ const storageOptions = [
   { value:  '500-gb-ssd', text:  '500 GB SSD', },
   { value:  '256-gb-ssd', text:  '256 GB SSD', },
 ]
+
+async function search() {
+  console.log('Buscar')
+  let result = await useFetch('http://localhost:3001/products/search', {
+    method: 'post',
+    body: {
+      cpu: cpuValue.value,
+      ram: ramValue.value,
+      graphics: graphicsValue.value,
+      storage: storageValue.value
+    }
+  })
+  console.log(result)
+}
+
+watch(cpuValue, () => {
+  search()
+})
+
+watch(graphicsValue, () => {
+  search()
+})
+
+watch(ramValue, () => {
+  search()
+})
+
+watch(storageValue, () => {
+  search()
+})
 
 </script>
