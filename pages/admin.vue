@@ -24,10 +24,10 @@
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
         >Usuarios</div>
       </div>
-      <div class="grow p-8 flex flex-wrap">
+      <div class="grow p-8 flex flex-wrap overflow-scroll">
         <div v-if="selected == 'products'" class="pl-4">
-          <p class="pb-2 font-bold mx-4">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
-          <div class="p-2 border-solid border-2 border-black w-52">
+          <p class="pb-2 font-bold mx-4 mt-4">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
+          <div class="card">
             <label for="name">Name:</label><br>
             <InputText v-model:value="formData.name" name="name"/><br>
             <label for="Description">Description:</label>
