@@ -54,8 +54,18 @@
           <div class="w-full max-w-4xl p-8 flex flex-col items-center">
           <!-- En un futuro el "Ordenador1" cambiarlo por el ID del producto para cambiar según el producto -->
           <div>
-              <h1 class="text-center py-4">Pago de producto: Ordenador1</h1>
-              <div class="w-full pb-16">Precio= 222€<br>CPU=...<br>Nº Cores=...<br>Más características...</div>
+              <h1 class="text-center py-4">Carrito de la compra:</h1>
+              {{ shoppingCart }}
+              <!-- Ejecutar en un bucle el listado de productos que hay añadidos junto a su precio,
+                    mostrando al final el precio total a pagar -->
+              <p>Productos:</p>
+              
+              <div v-for="product in shoppingCart">
+                <!-- <p>: {{ order.userid }}</p> -->
+                <!-- {{ product  }} -->
+              </div>
+
+              <!-- <div class="w-full pb-16">Precio= 222€<br>CPU=...<br>Nº Cores=...<br>Más características...</div> -->
           </div>
           <h1 class="text-center py-5">Detalles de pago</h1>
           <div class="container">
@@ -131,6 +141,12 @@
   
 <script setup>
 
+import { useUserStore } from "~/stores"
+const store = useUserStore()
+const token = store.token
+const user = store.user
+const shoppingCart = store.shoppingCart
+
 const formData1 = ref({
   cardNumber: '',
   expirationDate: '',
@@ -204,13 +220,5 @@ function confirmacionPago() {
 }
 
 
-import { useUserStore } from "~/stores"
-const store = useUserStore()
-const token = store.token
-const user = store.user
-const shoppingCart = store.shoppingCart
 
-function confirmacionPago() {
-  alert("Pago exitoso");
-}
 </script>

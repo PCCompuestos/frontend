@@ -18,7 +18,9 @@
           <label><b>Cantidad</b></label>
           <input type="number" value="1" min="1" max="10">
         </div>
-        <a href="../carrito" class="bg-primary p-2.5 my-3 rounded-lg font-bold text-white">Comprar</a>
+        <!-- <button @onClick="añadirACarrito()">Añadir al carrito</button> -->
+        <Button @click="anadirACarrito()">Añadir al carrito</Button>
+        <!-- <a href="../carrito" class="bg-primary p-2.5 my-3 rounded-lg font-bold text-white" @onClick="añadirACarrito()">Comprar</a> -->
       </div>
     </div>
   </Main>
@@ -26,5 +28,22 @@
 </template>
 
 <script setup>
+import { useUserStore } from "~/stores"
 const route = useRoute();
+const store = useUserStore()
+
+
+async function anadirACarrito() {
+  let result = await useFetch('http://localhost:3001/products/'+route.params.id)
+  // console.log(result)
+  if (result.status._value == "success") {
+    const dataValue = result.data._value
+    // console.log(dataValue)
+    store.addToShoppingCart(dataValue)
+    // console.log(dataValue)
+    console.log(store.shoppingCart)
+  }
+
+}
+
 </script>
