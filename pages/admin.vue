@@ -24,31 +24,25 @@
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
         >Usuarios</div>
       </div>
-      <div class="grow p-8 flex flex-wrap">
+      <div class="grow p-8 flex flex-wrap overflow-scroll">
         <div v-if="selected == 'products'" class="pl-4">
-          <p class="pb-2 font-bold">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
-          <div class="p-2 border-solid border-2 border-black w-52">
-            <label for="Name">Name:</label><br>
-            <input type="text" id="Name" name="Name" class="border-solid border-2 border-black"
-            v-model="formData.Name"><br>
+          <p class="pb-2 font-bold mx-4 mt-4">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
+          <div class="card">
+            <label for="name">Name:</label><br>
+            <InputText v-model:value="formData.name" name="name"/><br>
             <label for="Description">Description:</label>
-            <input type="text" id="Description" name="Description" class="border-solid border-2 border-black"
-            v-model="formData.Description"><br>
-            <label for="Quantity">Quantity:</label><br>
-            <input type="text" id="Quantity" name="Quantity" class="border-solid border-2 border-black"
-            v-model="formData.Quantity"><br>
-            <label for="Price">Price:</label><br>
-            <input type="text" id="Price" name="Price" class="border-solid border-2 border-black"
-            v-model="formData.Price"><br>
-            <label for="Url">Url:</label><br>
-            <input type="text" id="Url" name="Url" class="border-solid border-2 border-black"
-            v-model="formData.URL"><br>
-            <label for="Image">Image:</label><br>
-            <input type="text" id="Image" name="Image" class="border-solid border-2 border-black"
-            v-model="formData.Image"><br><br>
-            <button class="w-full bg-primary text-center cursor-pointer" @click="addProduct()">Añadir producto</button>
+            <InputText v-model:value="formData.description" name="description"/><br>
+            <label for="quantity">Quantity:</label><br>
+            <InputText v-model:value="formData.quantity" name="quantity"/><br>
+            <label for="price">Price:</label><br>
+            <InputText v-model:value="formData.price" name="price"/><br>
+            <label for="url">URL:</label><br>
+            <InputText v-model:value="formData.url" name="url"/><br>
+            <label for="image">Image:</label><br>
+            <InputText v-model:value="formData.image" name="image"/><br>
+            <Button @click="addProduct()">Añadir producto</Button>
           </div><br>
-          <p class="font-bold">LISTADO DE PRODUCTOS:</p>
+          <p class="font-bold mx-4">LISTADO DE PRODUCTOS:</p>
           <div v-for="product in products" class="card">
             <p><b>Name: {{ product.name }}</b></p>
             <p>Description: {{ product.description }}</p>
@@ -127,12 +121,12 @@ const token = store.token
 const headers = {'Authorization': `Bearer ${token}`}
 
 const formData = ref({
-  Name: '',
-  Description: '',
-  Quantity: '',
-  Price: '',
-  URL: '',
-  Image: ''
+  name: '',
+  description: '',
+  quantity: '',
+  price: '',
+  url: '',
+  image: ''
 })
 
 const selected = ref('users')
@@ -172,12 +166,12 @@ async function addProduct(){
     method: 'post',
     headers: headers,
     body: {
-      name: formData.value.Name,
-      description: formData.value.Description,
-      quantity: formData.value.Quantity,
-      price: formData.value.Price,
-      url: formData.value.URL,
-      image: formData.value.Image
+      name: formData.value.name,
+      description: formData.value.description,
+      quantity: formData.value.quantity,
+      price: formData.value.price,
+      url: formData.value.url,
+      image: formData.value.image
     }
   })
   if (result.status._value == "success") {
