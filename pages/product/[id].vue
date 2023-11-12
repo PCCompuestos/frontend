@@ -34,16 +34,12 @@ const store = useUserStore()
 
 
 async function anadirACarrito() {
-  let result = await useFetch('http://localhost:3001/products/'+route.params.id)
-  // console.log(result)
+  let result = await useFetch('http://localhost:3001/products/' + route.params.id)
   if (result.status._value == "success") {
-    const dataValue = result.data._value
-    // console.log(dataValue)
-    store.addToShoppingCart(dataValue)
-    // console.log(dataValue)
-    console.log(store.shoppingCart)
+    const dataValue = [result.data._value]; // Wrap dataValue in an array
+    store.addToShoppingCart(dataValue);
+    console.log(store.shoppingCart);
   }
-
 }
 
 </script>
