@@ -55,18 +55,16 @@
           <!-- En un futuro el "Ordenador1" cambiarlo por el ID del producto para cambiar según el producto -->
           <div>
               <h1 class="text-center py-4">Carrito de la compra:</h1>
-              {{ shoppingCart }}
               <!-- Ejecutar en un bucle el listado de productos que hay añadidos junto a su precio,
                     mostrando al final el precio total a pagar -->
-              <p>Productos:</p>
-              
               <div v-for="product in shoppingCart">
-                <!-- <p>: {{ order.userid }}</p> -->
-                <!-- {{ product  }} -->
-              </div>
-
-              <!-- <div class="w-full pb-16">Precio= 222€<br>CPU=...<br>Nº Cores=...<br>Más características...</div> -->
+                <p>{{ product.name }}: {{ product.price }}€</p>
+              </div> <br>
+              <!-- Mostrar el precio total de la compra -->
+              <p class="font-semibold underline">Precio total: {{ calculateTotalPriceofShoppingCart() }}€</p>
+              <Button @click="store.clearShoppingCart()">Eliminar carrito</Button>
           </div>
+
           <h1 class="text-center py-5">Detalles de pago</h1>
           <div class="container">
             <div class="col-50 py-5 px-5 w-80">
@@ -97,7 +95,7 @@
                     <label class="pr-4" for="dir">Dirección:</label>
                     <input 
                         id="dir"
-                        type="password"
+                        type="text"
                         class="input_box" 
                         placeholder="c/ Maria de Luna, 22, 1ºA"
                         required
@@ -152,6 +150,14 @@ const formData1 = ref({
   expirationDate: '',
   code: '',
 })
+
+function calculateTotalPriceofShoppingCart() {
+  let totalPrice = 0
+  for (let i = 0; i < shoppingCart.length; i++) {
+    totalPrice += parseFloat(shoppingCart[i].price)
+  }
+  return totalPrice
+}
 
 function confirmacionPago() {
   if (formData1.value.cardNumber == '' || formData1.value.expirationDate == '' || formData1.value.code == '') {

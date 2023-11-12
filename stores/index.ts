@@ -45,5 +45,5 @@ export const useUserStore = defineStore('user', () => {
     navigateTo('/')
   }
 
-  return { token, user, shoppingCart, setToken, setUser, addToShoppingCart, logout }
+  return { token, user, shoppingCart, setToken, setUser, addToShoppingCart, clearShoppingCart, logout }
 })
