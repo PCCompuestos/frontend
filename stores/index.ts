@@ -4,7 +4,18 @@ import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const token = useCookie('userToken', { maxAge: 60*60 })
-  const user = useCookie('userData', { maxAge: 60*60 })
+
+  interface UserData {
+    ID: number;
+    name: string;
+    password: string;
+    isAdmin: boolean;
+    email: string;
+    address: string;
+  }
+
+  // const user = useCookie('userData', { maxAge: 60*60 })
+  const user = useCookie<UserData>('userData', { maxAge: 60*60 })
   const shoppingCart = useCookie('shoppingCart', 
     { 
       default: () => [] as any[],
@@ -21,22 +32,6 @@ export const useUserStore = defineStore('user', () => {
   } 
   const clearShoppingCart = () => (shoppingCart.value = [])
 
-  // const addToShoppingCart = (data?: any) => {
-  //   if (data) {
-  //     // Check if the data is an array and use spread operator if true
-  //     if (Array.isArray(data)) {
-  //       shoppingCart.value.push(...data);
-  //     } else {
-  //       shoppingCart.value.push(data);
-  //     }
-  //   }
-  // }
-
-  // const addToShoppingCart = (data?: any) => (showData())
-
-  // function showData() {
-  //   console.log(shoppingCart.value)
-  // }
 
   const logout = () => {
     setToken()

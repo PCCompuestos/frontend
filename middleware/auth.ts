@@ -7,4 +7,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
   if (!store.token) {
     return navigateTo('/login')
   }
+  // Redirigir a la página de admin si el usuario tiene el valor isAdmin en true
+  if (user.isAdmin) {
+    return navigateTo('/admin')
+  }
 })

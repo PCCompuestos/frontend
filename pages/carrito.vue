@@ -53,7 +53,7 @@
           <!-- Uso de clases de Tailwind, combinadas con flex -->
           <div class="w-full max-w-4xl p-8 flex flex-col items-center">
           <!-- En un futuro el "Ordenador1" cambiarlo por el ID del producto para cambiar según el producto -->
-          <div>
+          <div class="text-center">
               <h1 class="text-center py-4">Carrito de la compra:</h1>
               <!-- Ejecutar en un bucle el listado de productos que hay añadidos junto a su precio,
                     mostrando al final el precio total a pagar -->
@@ -61,8 +61,10 @@
                 <p>{{ product.name }}: {{ product.price }}€</p>
               </div> <br>
               <!-- Mostrar el precio total de la compra -->
-              <p class="font-semibold underline">Precio total: {{ calculateTotalPriceofShoppingCart() }}€</p>
-              <Button @click="store.clearShoppingCart()">Eliminar carrito</Button>
+              <p v-if="total == 0" class="font-semibold italic">VACÍO</p>
+              <p v-else-if="total > 0" class="font-semibold underline">Precio total: {{ total }}€</p>
+              <br>
+              <Button v-if="total > 0" @click="store.clearShoppingCart()">Eliminar carrito</Button>
           </div>
 
           <h1 class="text-center py-5">Detalles de pago</h1>
@@ -144,6 +146,8 @@ const store = useUserStore()
 const token = store.token
 const user = store.user
 const shoppingCart = store.shoppingCart
+
+let total = calculateTotalPriceofShoppingCart()
 
 const formData1 = ref({
   cardNumber: '',
