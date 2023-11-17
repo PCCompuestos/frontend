@@ -50,16 +50,19 @@
             <p>Price: {{ product.price }}</p>
             <p>Url: {{ product.url }}</p>
             <p>Image: {{ product.image }}</p>
+            <Button @click="">Editar producto</Button>
             <Button @click="removeProduct(product.id)" class="bg-red-500">Eliminar producto</Button>
           </div>
           <p v-if="products.length == 0">No hay productos.</p>
         </div>
         <div v-if="selected == 'components'" class="card-container">
           <div v-for="component in components" class="card">
-            <p><b>Code: {{ component.code }}</b></p>
-            <p>Name: {{ component.name }}</p>
+            <p><b>ID: {{ component.id }}</b></p>
+            <p>Brand: {{ component.brand }}</p>
+            <p>Model: {{ component.model }}</p>
             <p>Quantity: {{ component.quantity }}</p>
             <p>Price: {{ component.price }}</p>
+            <Button @click="">Editar componente</Button>
             <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0">No hay componentes.</p>
@@ -116,6 +119,17 @@ definePageMeta({
 })
 
 import { useUserStore } from "~/stores"
+import { ref } from 'vue'
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/vue'
+
+const isOpenProductEditor = ref(true)
+
 const store = useUserStore()
 const token = store.token
 const headers = {'Authorization': `Bearer ${token}`}
