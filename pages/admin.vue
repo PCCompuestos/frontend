@@ -52,7 +52,7 @@
           <p v-if="products.length == 0">No hay productos.</p>
         </div>
         <div v-if="selected == 'components'" class="card-container">
-          <InputText v-model:value="componentSearch" class="m-4" placeholder="Search component" />
+          <InputText v-model:value="componentSearch" class="m-4" placeholder="Buscar componente" />
           <div v-for="component in filteredComponents" class="card">
             <p><b>ID: {{ component.id }}</b></p>
             <p>Brand: {{ component.brand }}</p>
@@ -65,7 +65,8 @@
           <p v-if="components.length == 0">No hay componentes.</p>
         </div>
         <div v-if="selected == 'orders'">
-          <div v-for="order in orders" class="card">
+          <InputText v-model:value="orderSearch" class="m-4" placeholder="Buscar pedido" />
+          <div v-for="order in filteredOrders" class="card">
             <p><b>OrderID: {{ order.id }}</b></p>
             <p>User: {{ order.userid }}</p>
             <p>Quantity: {{ order.quantity }}</p>
@@ -211,6 +212,14 @@ async function removeComponent(code) {
 // ░╚════╝░╚═╝░░╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░
 
 const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
+const orderSearch = ref('')
+
+const filteredOrders = computed(() => {
+  return orders.value.filter(order =>
+    order.id.toLowerCase().includes(orderSearch.value.toLowerCase()) ||
+    order.userid.toLowerCase().includes(orderSearch.value.toLowerCase())
+  );
+})
 
 async function updateOrderStatus(id, status) {
   await useFetch('http://localhost:3001/orders/' + id + '/setStatus', {
