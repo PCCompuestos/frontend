@@ -53,40 +53,35 @@
 import { IconSearch } from '@tabler/icons-vue';
 
 // const { data: products } = await useFetch('http://localhost:3001/products')
-const cpuValue = ref('intel-core-i7')
-const ramValue = ref('4-GB')
-const graphicsValue = ref('geforce-rtx-4070-series')
-const storageValue = ref('1-tb-ssd')
+const cpuValue = ref('Intel Core i7')
+const ramValue = ref('DDR3 Kingston HyperX 8GB DDR3')
+const graphicsValue = ref('NVIDIA GeForce RTX 3060 Ti')
+const storageValue = ref('Samsung EVO 500GB SSD')
 
 const cpuOptions = [
-  { value: 'intel-core-i7', text: 'Intel Core I7', },
-  { value: 'intel-core-i5', text: 'Intel Core I5', },
-  { value: 'amd-ryzen-7', text: 'AMD Ryzen 7', },
-  { value: 'intel-core-i9', text: 'Intel Core i9', },
-  { value: 'amd-ryzen-5', text: 'AMD Ryzen 5'},
+  { value: 'Intel Core i5', text: 'Intel Core i5' },
+  { value: 'Intel Core i7', text: 'Intel Core i7' },
+  { value: 'Intel Core i9', text: 'Intel Core i9' },
+  { value: 'AMD Ryzen 5',   text: 'AMD Ryzen 5' },
+  { value: 'AMD Ryzen 7',   text: 'AMD Ryzen 7' },
 ]
 
 const ramOptions = [
-  { value:  '4-GB', text:  '4 GB', },
-  { value:  '8-GB', text:  '8 GB', },
-  { value: '16-GB', text: '16 GB', },
-  { value: '32-GB', text: '32 GB', },
+  { value: 'DDR3 Kingston HyperX 8GB DDR3',        text: '8 GB', },
+  { value: 'DDR4 Crucial Ballistix 16GB DDR4',     text:  '16 GB', },
+  { value: 'DDR4 Corsair Vengeance LPX 32GB DDR4', text:  '32 GB', },
 ]
 
 const graphicsOptions = [
-  { value:  'geforce-rtx-4070-series', text:  'GeForce RTX 4070 Series', },
-  { value:  'geforce-rtx-3060-series', text:  'GeForce RTX 3060 Series', },
-  { value:  'geforce-rtx-4060-series', text:  'GeForce RTX 4060 Series', },
-  { value:  'geforce-rtx-3050-series', text:  'GeForce RTX 3050 Series', },
-  { value:                 'gtx-1650', text:                 'GTX 1650', },
+  { value: 'NVIDIA GeForce RTX 3060 Ti', text: 'NVIDIA GeForce RTX 3060 Ti', },
+  { value: 'AMD Radeon RX 570', text: 'AMD Radeon RX 570', },
+  { value: 'NVIDI GeForce GTX 1660',  text: 'GTX 1660', },
 ]
 
 const storageOptions = [
-  { value:    '1-tb-ssd', text:    '1 TB SSD', },
-  { value:    '2-tb-ssd', text:    '2 TB SSD', },
-  { value:  '512-gb-ssd', text:  '512 GB SSD', },
-  { value:  '500-gb-ssd', text:  '500 GB SSD', },
-  { value:  '256-gb-ssd', text:  '256 GB SSD', },
+  { value: 'Samsung EVO 500GB SSD', text: '500 GB SSD' },
+  { value: 'WD Blue 1TB HDD', text: '1 TB HDD', },
+  { value: 'Seagate Barracuda 2TB HDD', text:  '2 TB HDD', },
 ]
 
 async function search() {
