@@ -89,6 +89,11 @@ const storageOptions = [
   { value:  '256-gb-ssd', text:  '256 GB SSD', },
 ]
 
+async function fetchProducts() {
+  let result = await useFetch('http://localhost:3001/products')
+  
+}
+
 async function search() {
   console.log('Buscar')
   let result = await useFetch('http://localhost:3001/products/search', {
