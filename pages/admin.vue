@@ -46,22 +46,27 @@
             <p>Price: {{ product.price }}</p>
             <p>Url: {{ product.url }}</p>
             <p>Image: {{ product.image }}</p>
+            <Button @click="">Editar producto</Button>
             <Button @click="removeProduct(product.id)" class="bg-red-500">Eliminar producto</Button>
           </div>
           <p v-if="products.length == 0">No hay productos.</p>
         </div>
         <div v-if="selected == 'components'" class="card-container">
-          <div v-for="component in components" class="card">
-            <p><b>Code: {{ component.code }}</b></p>
-            <p>Name: {{ component.name }}</p>
+          <InputText v-model:value="componentSearch" class="m-4" placeholder="Buscar componente" />
+          <div v-for="component in filteredComponents" class="card">
+            <p><b>ID: {{ component.id }}</b></p>
+            <p>Brand: {{ component.brand }}</p>
+            <p>Model: {{ component.model }}</p>
             <p>Quantity: {{ component.quantity }}</p>
             <p>Price: {{ component.price }}</p>
+            <Button @click="">Editar componente</Button>
             <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0">No hay componentes.</p>
         </div>
         <div v-if="selected == 'orders'">
-          <div v-for="order in orders" class="card">
+          <InputText v-model:value="orderSearch" class="m-4" placeholder="Buscar pedido" />
+          <div v-for="order in filteredOrders" class="card">
             <p><b>OrderID: {{ order.id }}</b></p>
             <p>User: {{ order.userid }}</p>
             <p>Quantity: {{ order.quantity }}</p>
@@ -108,10 +113,26 @@ definePageMeta({
   ],
 })
 
+// Get token and set headers for queries
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
 const headers = {'Authorization': `Bearer ${token}`}
+
+// Which option in sidebar is selected?
+const selected = ref('users')
+
+
+// ██████╗░██████╗░░█████╗░██████╗░██╗░░░██╗░█████╗░████████╗░██████╗
+// ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║░░░██║██╔══██╗╚══██╔══╝██╔════╝
+// ██████╔╝██████╔╝██║░░██║██║░░██║██║░░░██║██║░░╚═╝░░░██║░░░╚█████╗░
+// ██╔═══╝░██╔══██╗██║░░██║██║░░██║██║░░░██║██║░░██╗░░░██║░░░░╚═══██╗
+// ██║░░░░░██║░░██║╚█████╔╝██████╔╝╚██████╔╝╚█████╔╝░░░██║░░░██████╔╝
+// ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░╚═════╝░░╚════╝░░░░╚═╝░░░╚═════╝░
+
+const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
+
+const isOpenProductEditor = ref(true)
 
 const formData = ref({
   name: '',
@@ -121,38 +142,6 @@ const formData = ref({
   url: '',
   image: ''
 })
-
-const selected = ref('users')
-
-// 'Not prepared', 'In preparation', 'Sent', 'Delivered'
-const orderStatusOptions = [
-  { value: 'Not prepared', text: 'Not prepared', },
-  { value: 'In preparation', text: 'In preparation', },
-  { value: 'Sent', text: 'Sent', },
-  { value: 'Delivered', text: 'Delivered', },
-]
-
-const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
-const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
-const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
-const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
-
-async function convertToAdmin(user) {
-  let result = await useFetch('http://localhost:3001/users/' + user.id, {
-    method: 'put',
-    headers: headers,
-    body: {
-      name: user.name,
-      password: user.password,
-      isadmin: true,
-      email: user.email, 
-      address: user.address
-    }
-  })
-  if (result.status._value == "success") {
-    alert('Usuario convertido a administrador')
-  }
-}
 
 async function addProduct(){
   let result = await useFetch('http://localhost:3001/products', {
@@ -172,15 +161,66 @@ async function addProduct(){
   }
 }
 
-async function removeUser(id) {
-  await useFetch('http://localhost:3001/users/' + id, {
+async function removeProduct(id) {
+  await useFetch('http://localhost:3001/products/' + id, {
     method: 'delete',
     headers: headers
   })
-  users.value = users.value.filter(user => user.id !== id)
+  products.value = products.value.filter(product => product.id !== id);
 }
 
-// ORDERS
+
+// ░█████╗░░█████╗░███╗░░░███╗██████╗░░█████╗░███╗░░██╗███████╗███╗░░██╗████████╗░██████╗
+// ██╔══██╗██╔══██╗████╗░████║██╔══██╗██╔══██╗████╗░██║██╔════╝████╗░██║╚══██╔══╝██╔════╝
+// ██║░░╚═╝██║░░██║██╔████╔██║██████╔╝██║░░██║██╔██╗██║█████╗░░██╔██╗██║░░░██║░░░╚█████╗░
+// ██║░░██╗██║░░██║██║╚██╔╝██║██╔═══╝░██║░░██║██║╚████║██╔══╝░░██║╚████║░░░██║░░░░╚═══██╗
+// ╚█████╔╝╚█████╔╝██║░╚═╝░██║██║░░░░░╚█████╔╝██║░╚███║███████╗██║░╚███║░░░██║░░░██████╔╝
+// ░╚════╝░░╚════╝░╚═╝░░░░░╚═╝╚═╝░░░░░░╚════╝░╚═╝░░╚══╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚═════╝░
+
+const { data: components} = await useFetch('http://localhost:3001/components', {headers: headers})
+const componentSearch = ref('')
+
+// 'Not prepared', 'In preparation', 'Sent', 'Delivered'
+const orderStatusOptions = [
+  { value: 'Not prepared', text: 'Not prepared', },
+  { value: 'In preparation', text: 'In preparation', },
+  { value: 'Sent', text: 'Sent', },
+  { value: 'Delivered', text: 'Delivered', },
+]
+
+const filteredComponents = computed(() => {
+  return components.value.filter(component =>
+    component.brand.toLowerCase().includes(componentSearch.value.toLowerCase()) ||
+    component.model.toLowerCase().includes(componentSearch.value.toLowerCase())
+  );
+})
+
+// No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
+async function removeComponent(code) {
+  await useFetch('http://localhost:3001/components/' + code, {
+    method: 'delete',
+    headers: headers
+  })
+  components.value = components.value.filter(component => component.code !== code);
+}
+
+// ░█████╗░██████╗░██████╗░███████╗██████╗░░██████╗
+// ██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔════╝
+// ██║░░██║██████╔╝██║░░██║█████╗░░██████╔╝╚█████╗░
+// ██║░░██║██╔══██╗██║░░██║██╔══╝░░██╔══██╗░╚═══██╗
+// ╚█████╔╝██║░░██║██████╔╝███████╗██║░░██║██████╔╝
+// ░╚════╝░╚═╝░░╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░
+
+const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
+const orderSearch = ref('')
+
+const filteredOrders = computed(() => {
+  return orders.value.filter(order =>
+    order.id.toLowerCase().includes(orderSearch.value.toLowerCase()) ||
+    order.userid.toLowerCase().includes(orderSearch.value.toLowerCase())
+  );
+})
+
 async function updateOrderStatus(id, status) {
   await useFetch('http://localhost:3001/orders/' + id + '/setStatus', {
     method: 'put',
@@ -200,24 +240,37 @@ async function removeOrder(id) {
   orders.value = orders.value.filter(order => order.id !== id);
 }
 
-async function removeProduct(id) {
-  await useFetch('http://localhost:3001/products/' + id, {
+// ██╗░░░██╗░██████╗███████╗██████╗░░██████╗
+// ██║░░░██║██╔════╝██╔════╝██╔══██╗██╔════╝
+// ██║░░░██║╚█████╗░█████╗░░██████╔╝╚█████╗░
+// ██║░░░██║░╚═══██╗██╔══╝░░██╔══██╗░╚═══██╗
+// ╚██████╔╝██████╔╝███████╗██║░░██║██████╔╝
+// ░╚═════╝░╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░
+
+const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+
+async function convertToAdmin(user) {
+  let result = await useFetch('http://localhost:3001/users/' + user.id, {
+    method: 'put',
+    headers: headers,
+    body: {
+      name: user.name,
+      password: user.password,
+      isadmin: true,
+      email: user.email, 
+      address: user.address
+    }
+  })
+  if (result.status._value == "success") {
+    alert('Usuario convertido a administrador')
+  }
+}
+
+async function removeUser(id) {
+  await useFetch('http://localhost:3001/users/' + id, {
     method: 'delete',
     headers: headers
   })
-  products.value = products.value.filter(product => product.id !== id);
+  users.value = users.value.filter(user => user.id !== id)
 }
-
-// No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
-async function removeComponent(code) {
-  await useFetch('http://localhost:3001/components/' + code, {
-    method: 'delete',
-    headers: headers
-  })
-  components.value = components.value.filter(component => component.code !== code);
-}
-
-watch(orders, () => {
-  console.log(orders.value)
-})
 </script>
