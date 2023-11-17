@@ -84,6 +84,11 @@ const storageOptions = [
   { value: 'Seagate Barracuda 2TB HDD', text:  '2 TB HDD', },
 ]
 
+async function fetchProducts() {
+  let result = await useFetch('http://localhost:3001/products')
+  
+}
+
 async function search() {
   console.log('Buscar')
   let result = await useFetch('http://localhost:3001/products/search', {

@@ -12,10 +12,6 @@
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
         >Componentes</div>
         <div 
-          @click="selected = 'factory'"
-          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
-        >Fábrica</div>
-        <div 
           @click="selected = 'orders'" 
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
         >Pedidos</div>
@@ -63,9 +59,6 @@
             <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0">No hay componentes.</p>
-        </div>
-        <div v-if="selected == 'factory'">
-          <p>Qué carajos es esto.</p>
         </div>
         <div v-if="selected == 'orders'">
           <div v-for="order in orders" class="card">
