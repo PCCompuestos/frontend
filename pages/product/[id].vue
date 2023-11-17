@@ -32,9 +32,15 @@ import { useUserStore } from "~/stores"
 const route = useRoute();
 const store = useUserStore()
 
+let producto = await useFetch('http://localhost:3001/products/' + route.params.url)
+console.log(producto)
+if (producto.status._value == "success") {
+  const dataValue = producto.data._value
+  console.log(dataValue)
+}
 
 async function anadirACarrito() {
-  let result = await useFetch('http://localhost:3001/products/' + route.params.id)
+  let result = await useFetch('http://localhost:3001/products/' + route.params.url)
   if (result.status._value == "success") {
     const dataValue = [result.data._value]; // Wrap dataValue in an array
     store.addToShoppingCart(dataValue);

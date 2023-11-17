@@ -16,9 +16,17 @@
 <!--          <a href="products.value.url[0]" class="h-52 w-52"><img src="products.value.image[0]"></a>   -->
 <!--          <a href="products.value.url[1]" class="h-52 w-52"><img src="products.value.image[1]"></a>   -->
 <!--          <a href="products.value.url[2]" class="h-52 w-52"><img src="products.value.image[2]"></a>   -->
+          <!-- Loop that shows 3 products stores in the variable products1_3 with a link to them -->
+          <div v-for="product in products1_3" class="h-52 w-52 bg-gray-100">
+            <a :href="'product/'+product.url">
+              <img :src="product.image" alt="Product Image">
+            </a>
+          </div>
+          <!-- 
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
           <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
-          <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
+          <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a> 
+          -->
         </div>
       </section>
       <section class="w-full max-w-4xl p-8">
@@ -89,10 +97,20 @@ const storageOptions = [
   { value:  '256-gb-ssd', text:  '256 GB SSD', },
 ]
 
-async function fetchProducts() {
-  let result = await useFetch('http://localhost:3001/products')
-  
+let products1_3
+
+// Function that fetches products from the API and stores 
+// the first 3 in the products1_3 variable slicing the array
+// async function fetchProducts() {
+let result = await useFetch('http://localhost:3001/products')
+if (result.status._value == "success") {
+  const dataValue = result.data._value
+  products1_3 = dataValue.slice(0, 3)
+  console.log(products1_3)
+} else {
+  alert('Error al cargar los productos.')
 }
+// }
 
 async function search() {
   console.log('Buscar')
