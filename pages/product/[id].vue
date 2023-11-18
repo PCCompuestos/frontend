@@ -6,17 +6,24 @@
         <img src="/images/computer.jpg" class="w-full rounded-lg">
       </div>
       <div class="w-1/2 pl-8 flex flex-col items-start">
-        <h1>{{ $route.params.id }}</h1>
+        <h1>{{ productData.name }}</h1>
         <p class="pt-4 leading-9">
-          <b>Gráfica Series</b>: GeForce RTX 3060 Series<br>
-          <b>Almacenamiento</b>: 500 GB SSD<br>
-          <b>Procesador</b>: Intel Core I5<br>
-          <b>Memoria Ram</b>: 16GB RAM<br>
-          <b>Modelo Sistema Operativo</b>: Sin Sistema operativo <br>
+          <!-- 
+              id: '2',
+              name: 'Product2',
+              description: 'This is product 2',
+              quantity: '5',
+              price: '199.99',
+              url: 'product2',
+              image: 'image1'
+           -->
+          <b>Descripción</b>: {{productData.description}}<br>
+          <b>Unidades disponibles</b>: {{productData.quantity}}<br>
+          <b>Precio</b>: {{productData.price}}€<br>
         </p>
         <div class="my-4 flex flex-col">
           <label><b>Cantidad</b></label>
-          <input type="number" value="1" min="1" max="10">
+          <input  type="number" value="1" min="1" max="10">
         </div>
         <!-- <button @onClick="añadirACarrito()">Añadir al carrito</button> -->
         <Button @click="anadirACarrito()">Añadir al carrito</Button>
@@ -32,17 +39,22 @@ import { useUserStore } from "~/stores"
 const route = useRoute();
 const store = useUserStore()
 
-let producto = await useFetch('http://localhost:3001/products/' + route.params.url)
-console.log(producto)
-if (producto.status._value == "success") {
-  const dataValue = producto.data._value
-  console.log(dataValue)
-}
+
+// const formData1 = ref({
+//   quantity: ''
+// })
+
+let producto = await useFetch('http://localhost:3001/products/' + route.params.id)
+let productData = producto.data._value
+// console.log(producto)
+// if (producto.status._value == "success") {
+//   const dataValue = producto.data._value
+//   console.log(dataValue)
+// }
 
 async function anadirACarrito() {
-  let result = await useFetch('http://localhost:3001/products/' + route.params.url)
-  if (result.status._value == "success") {
-    const dataValue = [result.data._value]; // Wrap dataValue in an array
+  if (producto.status._value == "success") {
+    const dataValue = [productData]; // Wrap dataValue in an array
     store.addToShoppingCart(dataValue);
     console.log(store.shoppingCart);
   }

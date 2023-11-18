@@ -149,6 +149,8 @@ const shoppingCart = store.shoppingCart
 
 let total = calculateTotalPriceofShoppingCart()
 
+console.log(total)
+
 const formData1 = ref({
   cardNumber: '',
   expirationDate: '',
