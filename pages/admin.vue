@@ -25,15 +25,15 @@
         >Usuarios</div>
       </div>
       <div class="grow p-8 flex flex-wrap overflow-scroll">
-        <div v-if="selected == 'products'" class="pl-4 card-container">
-          <div class="mx-4 mt-4 mb-2">
+        <div v-if="selected == 'products'" class="card-container">
+          <div class="mx-4 mb-2">
             <Dialog>
               <template v-slot:button>Crear producto</template>
               <template v-slot:title>Crear producto</template>
               <template v-slot:form>
                 <label for="name">Name:</label><br>
                 <InputText v-model:value="productFormData.name" name="name"/><br>
-                <label for="Description">Description:</label>
+                <label for="description">Description:</label>
                 <InputText v-model:value="productFormData.description" name="description"/><br>
                 <label for="quantity">Quantity:</label><br>
                 <InputNumber v-model:value="productFormData.quantity" name="quantity"/><br>
@@ -79,14 +79,50 @@
           <p v-if="products.length == 0" class="mx-4">No hay productos.</p>
         </div>
         <div v-if="selected == 'components'" class="card-container">
+          <div class="mx-4 mb-2">
+            <Dialog>
+              <template v-slot:button>Crear componente</template>
+              <template v-slot:title>Crear componente</template>
+              <template v-slot:form>
+                <label for="brand">Brand:</label><br>
+                <InputText v-model:value="componentFormData.brand" name="brand"/><br>
+                <label for="model">Model:</label>
+                <InputText v-model:value="componentFormData.model" name="model"/><br>
+                <label for="description">Description:</label>
+                <InputText v-model:value="componentFormData.description" name="description"/><br>
+                <label for="quantity">Quantity:</label><br>
+                <InputNumber v-model:value="componentFormData.quantity" name="quantity"/><br>
+                <label for="price">Price:</label><br>
+                <InputNumber v-model:value="componentFormData.price" name="price"/><br>
+                <Button @click="addComponent()">Crear</Button>
+              </template>
+            </Dialog>
+          </div>
           <InputText v-model:value="componentSearch" class="m-4" placeholder="Buscar componente" />
           <div v-for="component in filteredComponents" class="card">
             <p><b>ID: {{ component.id }}</b></p>
             <p>Brand: {{ component.brand }}</p>
             <p>Model: {{ component.model }}</p>
+            <p>Description: {{ component.description }}</p>
             <p>Quantity: {{ component.quantity }}</p>
             <p>Price: {{ component.price }}</p>
-            <Button @click="">Editar componente</Button>
+            <Dialog>
+              <template v-slot:button>Editar componente</template>
+              <template v-slot:title>Editar componente</template>
+              <template v-slot:form>
+                <label for="brand">Brand:</label>
+                <InputText v-model:value="component.brand" name="brand"/>
+                <label for="model">Model:</label>
+                <InputText v-model:value="component.model" name="model"/>
+                <label for="description">Description:</label>
+                <InputText v-model:value="component.description" name="description"/>
+                <label for="quantity">Quantity:</label>
+                <InputNumber v-model:value="component.quantity" name="quantity"/>
+                <label for="price">Price:</label>
+                <InputNumber v-model:value="component.price" name="price"/>
+                <Button @click="editComponent(component)">Editar</Button>
+              </template>
+            </Dialog>
             <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0" class="mx-4">No hay componentes.</p>
@@ -105,7 +141,8 @@
           <p v-if="orders.length == 0" class="mx-4">No hay pedidos.</p>
         </div>
         <div v-if="selected == 'users'" class="card-container">
-          <div v-for="user in users" class="card">
+          <InputText v-model:value="userSearch" class="m-4" placeholder="Buscar usuario" />
+          <div v-for="user in filteredUsers" class="card">
             <p><b>UserID: {{ user.id }}</b></p>
             <p>Name: {{ user.name }}</p>
             <p>Email: {{ user.email }}</p>
@@ -243,6 +280,15 @@ async function removeProduct(id) {
 // ░╚════╝░░╚════╝░╚═╝░░░░░╚═╝╚═╝░░░░░░╚════╝░╚═╝░░╚══╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚═════╝░
 
 const { data: components} = await useFetch('http://localhost:3001/components', {headers: headers})
+
+const componentFormData = ref({
+  id: '',
+  brand: '',
+  model: '',
+  quantity: '',
+  price: '',
+})
+
 const componentSearch = ref('')
 
 // 'Not prepared', 'In preparation', 'Sent', 'Delivered'
@@ -313,6 +359,14 @@ async function removeOrder(id) {
 // ░╚═════╝░╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░
 
 const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+const userSearch = ref('')
+
+const filteredUsers = computed(() => {
+  return users.value.filter(user =>
+    user.name.toLowerCase().includes(userSearch.value.toLowerCase()) ||
+    user.email.toLowerCase().includes(userSearch.value.toLowerCase())
+  );
+})
 
 async function convertToAdmin(user) {
   let result = await useFetch('http://localhost:3001/users/' + user.id, {
