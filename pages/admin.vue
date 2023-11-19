@@ -190,7 +190,6 @@ watch(selected, (newValue) => {
   store.setAdminSelected(newValue)
 })
 
-
 // ██████╗░██████╗░░█████╗░██████╗░██╗░░░██╗░█████╗░████████╗░██████╗
 // ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║░░░██║██╔══██╗╚══██╔══╝██╔════╝
 // ██████╔╝██████╔╝██║░░██║██║░░██║██║░░░██║██║░░╚═╝░░░██║░░░╚█████╗░
@@ -237,9 +236,9 @@ async function addProduct(){
   } else {
     alert('Error')
   }
-  //console.log(result.rows[0].id)
-  console.log(result.data._rawValue.rows[0].id)
+  // Set id
   productFormData.value.id = result.data._rawValue.rows[0].id
+  // Append new product
   products.value.push(productFormData.value)
 }
 
@@ -285,6 +284,7 @@ const componentFormData = ref({
   id: '',
   brand: '',
   model: '',
+  description: '',
   quantity: '',
   price: '',
 })
@@ -305,6 +305,48 @@ const filteredComponents = computed(() => {
     component.model.toLowerCase().includes(componentSearch.value.toLowerCase())
   );
 })
+
+async function addComponent(){
+  let result = await useFetch('http://localhost:3001/components', {
+    method: 'post',
+    headers: headers,
+    body: {
+      brand: componentFormData.value.brand,
+      model: componentFormData.value.model,
+      description: componentFormData.value.description,
+      quantity: componentFormData.value.quantity,
+      price: componentFormData.value.price
+    }
+  })
+  if (result.status._value == "success") {
+    alert('Componente añadido exitosamente')
+  } else {
+    alert('Error')
+  }
+  // Set id
+  componentFormData.value.id = result.data._rawValue.rows[0].id
+  // Append new component
+  components.value.push(componentFormData.value)
+}
+
+async function editComponent(component) {
+  let result = await useFetch('http://localhost:3001/components/' + component.id, {
+    method: 'put',
+    headers: headers,
+    body: {
+      brand: component.brand,
+      model: component.model,
+      description: component.description,
+      quantity: component.quantity,
+      price: component.price
+    }
+  })
+  if (result.status._value == "success") {
+    alert('Éxito')
+  } else {
+    alert('Error')
+  }
+}
 
 // No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
 async function removeComponent(code) {
