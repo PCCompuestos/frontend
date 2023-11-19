@@ -21,35 +21,58 @@
         >Usuarios</div>
       </div>
       <div class="grow p-8 flex flex-wrap overflow-scroll">
-        <div v-if="selected == 'products'" class="pl-4">
-          <p class="pb-2 font-bold mx-4 mt-4">FORMULARIO DE CREACIÓN DE PRODUCTO:</p>
-          <div class="card">
-            <label for="name">Name:</label><br>
-            <InputText v-model:value="formData.name" name="name"/><br>
-            <label for="Description">Description:</label>
-            <InputText v-model:value="formData.description" name="description"/><br>
-            <label for="quantity">Quantity:</label><br>
-            <InputText v-model:value="formData.quantity" name="quantity"/><br>
-            <label for="price">Price:</label><br>
-            <InputText v-model:value="formData.price" name="price"/><br>
-            <label for="url">URL:</label><br>
-            <InputText v-model:value="formData.url" name="url"/><br>
-            <label for="image">Image:</label><br>
-            <InputText v-model:value="formData.image" name="image"/><br>
-            <Button @click="addProduct()">Añadir producto</Button>
-          </div><br>
-          <p class="font-bold mx-4">LISTADO DE PRODUCTOS:</p>
-          <div v-for="product in products" class="card">
+        <div v-if="selected == 'products'" class="pl-4 card-container">
+          <div class="mx-4 mt-4 mb-2">
+            <Dialog>
+              <template v-slot:button>Crear producto</template>
+              <template v-slot:title>Crear producto</template>
+              <template v-slot:form>
+                <label for="name">Name:</label><br>
+                <InputText v-model:value="productFormData.name" name="name"/><br>
+                <label for="Description">Description:</label>
+                <InputText v-model:value="productFormData.description" name="description"/><br>
+                <label for="quantity">Quantity:</label><br>
+                <InputNumber v-model:value="productFormData.quantity" name="quantity"/><br>
+                <label for="price">Price:</label><br>
+                <InputNumber v-model:value="productFormData.price" name="price"/><br>
+                <label for="url">URL:</label><br>
+                <InputText v-model:value="productFormData.url" name="url"/><br>
+                <label for="image">Image:</label><br>
+                <InputText v-model:value="productFormData.image" name="image"/><br>
+                <Button @click="addProduct()">Crear</Button>
+              </template>
+            </Dialog>
+          </div>
+          <InputText v-model:value="productSearch" class="m-4" placeholder="Buscar producto" />
+          <div v-for="product in filteredProducts" class="card">
             <p><b>Name: {{ product.name }}</b></p>
             <p>Description: {{ product.description }}</p>
             <p>Quantity: {{ product.quantity }}</p>
             <p>Price: {{ product.price }}</p>
             <p>Url: {{ product.url }}</p>
             <p>Image: {{ product.image }}</p>
-            <Button @click="">Editar producto</Button>
+            <Dialog>
+              <template v-slot:button>Editar producto</template>
+              <template v-slot:title>Editar producto</template>
+              <template v-slot:form>
+                <label for="name">Name:</label><br>
+                <InputText v-model:value="product.name" name="name"></InputText>
+                <label for="Description">Description:</label>
+                <InputText v-model:value="product.description" name="description"></InputText>
+                <label for="quantity">Quantity:</label><br>
+                <InputNumber v-model:value="product.quantity" name="quantity"></InputNumber>
+                <label for="price">Price:</label><br>
+                <InputNumber v-model:value="product.price" name="price"></InputNumber>
+                <label for="url">URL:</label><br>
+                <InputText v-model:value="product.url" name="url"></InputText>
+                <label for="image">Image:</label><br>
+                <InputText v-model:value="product.image" name="image"></InputText>
+                <Button @click="editProduct(product)">Editar</Button>
+              </template>
+            </Dialog>
             <Button @click="removeProduct(product.id)" class="bg-red-500">Eliminar producto</Button>
           </div>
-          <p v-if="products.length == 0">No hay productos.</p>
+          <p v-if="products.length == 0" class="mx-4">No hay productos.</p>
         </div>
         <div v-if="selected == 'components'" class="card-container">
           <InputText v-model:value="componentSearch" class="m-4" placeholder="Buscar componente" />
@@ -62,9 +85,9 @@
             <Button @click="">Editar componente</Button>
             <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
           </div>
-          <p v-if="components.length == 0">No hay componentes.</p>
+          <p v-if="components.length == 0" class="mx-4">No hay componentes.</p>
         </div>
-        <div v-if="selected == 'orders'">
+        <div v-if="selected == 'orders'" class="card-container">
           <InputText v-model:value="orderSearch" class="m-4" placeholder="Buscar pedido" />
           <div v-for="order in filteredOrders" class="card">
             <p><b>OrderID: {{ order.id }}</b></p>
@@ -75,7 +98,7 @@
             <SelectMenu @change="(status) => updateOrderStatus(order.id, status)" :value="order.status" :options="orderStatusOptions" class="my-2"></SelectMenu>
             <Button @click="removeOrder(order.id)" class="bg-red-500">Eliminar pedido</Button>
           </div>
-          <p v-if="orders.length == 0">No hay pedidos.</p>
+          <p v-if="orders.length == 0" class="mx-4">No hay pedidos.</p>
         </div>
         <div v-if="selected == 'users'" class="card-container">
           <div v-for="user in users" class="card">
@@ -88,7 +111,7 @@
             <Button @click="convertToAdmin(user)">Establecer administrador</Button>
             <Button @click="removeUser(user.id)" class="bg-red-500">Eliminar usuario</Button>
           </div>
-          <p v-if="users.length == 0">No hay usuarios.</p>
+          <p v-if="users.length == 0" class="mx-4">No hay usuarios.</p>
         </div>
       </div>
     </div>
@@ -132,9 +155,8 @@ const selected = ref('users')
 
 const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
 
-const isOpenProductEditor = ref(true)
-
-const formData = ref({
+const productFormData = ref({
+  id: '',
   name: '',
   description: '',
   quantity: '',
@@ -143,21 +165,56 @@ const formData = ref({
   image: ''
 })
 
+const productSearch = ref('')
+
+const filteredProducts = computed(() => {
+  return products.value.filter(product =>
+    product.name.toLowerCase().includes(productSearch.value.toLowerCase()) ||
+    product.description.toLowerCase().includes(productSearch.value.toLowerCase())
+  );
+})
+
 async function addProduct(){
   let result = await useFetch('http://localhost:3001/products', {
     method: 'post',
     headers: headers,
     body: {
-      name: formData.value.name,
-      description: formData.value.description,
-      quantity: formData.value.quantity,
-      price: formData.value.price,
-      url: formData.value.url,
-      image: formData.value.image
+      name: productFormData.value.name,
+      description: productFormData.value.description,
+      quantity: productFormData.value.quantity,
+      price: productFormData.value.price,
+      url: productFormData.value.url,
+      image: productFormData.value.image
     }
   })
   if (result.status._value == "success") {
     alert('Producto añadido exitosamente')
+  } else {
+    alert('Error')
+  }
+  //console.log(result.rows[0].id)
+  console.log(result.data._rawValue.rows[0].id)
+  productFormData.value.id = result.data._rawValue.rows[0].id
+  products.value.push(productFormData.value)
+}
+
+async function editProduct(product) {
+  let result = await useFetch('http://localhost:3001/products/' + product.id, {
+    method: 'put',
+    headers: headers,
+    body: {
+      name: product.name,
+      description: product.description,
+      quantity: product.quantity,
+      price: product.price,
+      url: product.url,
+      image: product.image
+    }
+  })
+  if (result.status._value == "success") {
+    alert('Éxito')
+  } else {
+    alert('Error')
   }
 }
 
