@@ -31,6 +31,7 @@
             <p>Order ID: {{ order.id }}</p>
             <p>Fecha y hora de compra: {{ order.purchasedate }}</p>
             <p>Estado: {{ order.status }}</p>
+            <p>Dirección: {{ user.address }}</p>
           </div>
         </div>      
       </div>
