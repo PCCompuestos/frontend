@@ -23,13 +23,15 @@ export const useUserStore = defineStore('user', () => {
     }
   )
 
+  
+
   const setToken = (data?: string) => (token.value = data)
   const setUser = (data?: any) => (user.value = data)
   const addToShoppingCart = (data?: any) =>  {
     // if (Array.isArray(data)){
       shoppingCart.value = [...shoppingCart.value, ...data]
     // }
-  } 
+  }
   const clearShoppingCart = () => (shoppingCart.value = [])
 
 

@@ -23,7 +23,8 @@
         </p>
         <div class="my-4 flex flex-col">
           <label><b>Cantidad</b></label>
-          <input  type="number" value="1" min="1" max="10">
+          <input v-model="quantity" type="number" min="1" :max="productData.quantity">
+          <!-- <input  type="number" value="1" min="1" max="10"> -->
         </div>
         <!-- <button @onClick="añadirACarrito()">Añadir al carrito</button> -->
         <Button @click="anadirACarrito()">Añadir al carrito</Button>
@@ -40,9 +41,7 @@ const route = useRoute();
 const store = useUserStore()
 
 
-// const formData1 = ref({
-//   quantity: ''
-// })
+const quantity = ref(1)
 
 let producto = await useFetch('http://localhost:3001/products/' + route.params.id)
 let productData = producto.data._value
@@ -56,7 +55,7 @@ async function anadirACarrito() {
   if (producto.status._value == "success") {
     const dataValue = [productData]; // Wrap dataValue in an array
     store.addToShoppingCart(dataValue);
-    console.log(store.shoppingCart);
+    alert("Producto añadido al carrito");
   }
 }
 

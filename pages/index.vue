@@ -19,7 +19,7 @@
           <!-- Loop that shows 3 products stores in the variable products1_3 with a link to them -->
           <div v-for="product in products1_3" class="h-52 w-52 bg-gray-100">
             <a :href="'product/'+product.url">
-              <img :src="product.image" alt="Product Image">
+              <img :src='product.image' alt="Product Image">
             </a>
           </div>
           <!-- 
