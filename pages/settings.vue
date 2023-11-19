@@ -1,5 +1,5 @@
 <template>
-  <HeaderIn></HeaderIn>
+  <Header></Header>
   <Main>
     <div class="w-full max-w-4xl p-8 flex flex-col items-center">
       <h1 class="text-center">Ajustes</h1>
@@ -80,7 +80,7 @@ async function userExists(user) {
   for (let i = 0; i < users._rawValue.length; i++) {
     if (users._rawValue[i].name == user) {
       userIndex = i;
-      console.log(userIndex);
+      // console.log(userIndex);
       return true; // User with the given email exists
     }
   }
@@ -106,7 +106,8 @@ async function handleUsernameChange() {
   // Check if the username exists and the password matches
   if (await userExists(username)) {
     if (await passwordMatches(password)) {
-      console.log(`Changing username from ${username} to ${newUsername}`);
+      alert(`Changing username from ${username} to ${newUsername}`)
+      // console.log(`Changing username from ${username} to ${newUsername}`);
       // return true;
     } else {
       // Display an alert for incorrect username or password
@@ -131,7 +132,8 @@ async function handlePasswordChange() {
   // Check if the username exists and the password matches
   if (await userExists(username)) {
     if (await passwordMatches(password)) {
-      console.log(`Changing password from ${password} to ${newPassword}`);
+      alert(`¡Password changed successfully!`)
+      // alert(`Changing password from ${password} to ${newPassword}`)
       // return true;
     } else {
       // Display an alert for incorrect username or password
