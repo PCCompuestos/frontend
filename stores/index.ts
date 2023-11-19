@@ -22,11 +22,13 @@ export const useUserStore = defineStore('user', () => {
       maxAge: 60*60 
     }
   )
+  const adminSelected = useCookie('adminSelected', { maxAge: 60*60 })
 
   
 
   const setToken = (data?: string) => (token.value = data)
   const setUser = (data?: any) => (user.value = data)
+  const setAdminSelected = (data?: any) => (adminSelected.value = data)
   const addToShoppingCart = (data?: any) =>  {
     // if (Array.isArray(data)){
       shoppingCart.value = [...shoppingCart.value, ...data]
@@ -42,5 +44,16 @@ export const useUserStore = defineStore('user', () => {
     navigateTo('/')
   }
 
-  return { token, user, shoppingCart, setToken, setUser, addToShoppingCart, clearShoppingCart, logout }
+  return { 
+    token, 
+    user, 
+    shoppingCart, 
+    adminSelected, 
+    setToken, 
+    setUser, 
+    addToShoppingCart, 
+    setAdminSelected, 
+    clearShoppingCart, 
+    logout 
+  }
 })

@@ -39,6 +39,7 @@ async function login() {
       // Sucessful log in
       store.setToken(dataValue.token)
       store.setUser(dataValue.user)
+      store.setAdminSelected('users')
       console.log(store.user)
       alert('Has iniciado sesión correctamente.')
       await navigateTo('/dashboard')

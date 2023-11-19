@@ -5,19 +5,23 @@
       <div class="h-full flex-none w-52 flex flex-col border-r">
         <div 
           @click="selected = 'products'"
-          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
+          :class="{ 'bg-gray-100': selected == 'products' }"
+          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Productos</div>
         <div 
           @click="selected = 'components'"
-          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
+          :class="{ 'bg-gray-100': selected == 'components' }"
+          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Componentes</div>
         <div 
-          @click="selected = 'orders'" 
-          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
+          @click="selected = 'orders'"
+          :class="{ 'bg-gray-100': selected == 'orders' }"
+          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Pedidos</div>
         <div 
           @click="selected = 'users'" 
-          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-100"
+          :class="{ 'bg-gray-100': selected == 'users' }"
+          class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Usuarios</div>
       </div>
       <div class="grow p-8 flex flex-wrap overflow-scroll">
@@ -143,7 +147,11 @@ const token = store.token
 const headers = {'Authorization': `Bearer ${token}`}
 
 // Which option in sidebar is selected?
-const selected = ref('users')
+const selected = ref(store.adminSelected)
+
+watch(selected, (newValue) => {
+  store.setAdminSelected(newValue)
+})
 
 
 // ██████╗░██████╗░░█████╗░██████╗░██╗░░░██╗░█████╗░████████╗░██████╗
