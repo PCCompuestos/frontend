@@ -27,7 +27,8 @@
       <div class="grow p-8 flex flex-wrap overflow-scroll">
         <div v-if="selected == 'products'" class="card-container">
           <div class="mx-4 mb-2">
-            <Dialog>
+            <Button @click="navigateTo('/admin/product')">Crear producto</Button>
+            <!--<Dialog>
               <template v-slot:button>Crear producto</template>
               <template v-slot:title>Crear producto</template>
               <template v-slot:form>
@@ -45,7 +46,7 @@
                 <InputText v-model:value="productFormData.image" name="image"/><br>
                 <Button @click="addProduct()">Crear</Button>
               </template>
-            </Dialog>
+            </Dialog>-->
           </div>
           <InputText v-model:value="productSearch" class="m-4" placeholder="Buscar producto" />
           <div v-for="product in filteredProducts" class="card">
@@ -55,7 +56,7 @@
             <p>Price: {{ product.price }}</p>
             <p>Url: {{ product.url }}</p>
             <p>Image: {{ product.image }}</p>
-            <Dialog>
+            <!--<Dialog>
               <template v-slot:button>Editar producto</template>
               <template v-slot:title>Editar producto</template>
               <template v-slot:form>
@@ -73,7 +74,8 @@
                 <InputText v-model:value="product.image" name="image"></InputText>
                 <Button @click="editProduct(product)">Editar</Button>
               </template>
-            </Dialog>
+            </Dialog>-->
+            <Button @click="navigateTo('/admin/product/'+product.id)">Editar producto</Button>
             <Button @click="removeProduct(product.id)" class="bg-red-500">Eliminar producto</Button>
           </div>
           <p v-if="products.length == 0" class="mx-4">No hay productos.</p>
