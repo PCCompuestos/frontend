@@ -27,7 +27,7 @@
       <div class="grow p-8 flex flex-wrap overflow-scroll">
         <div v-if="selected == 'products'" class="card-container">
           <div class="mx-4 mb-2">
-            <Button @click="navigateTo('/admin/product')">Crear producto</Button>
+            <Button @click="navigateTo('/admin/product')"><IconPlus/>Crear producto</Button>
             <!--<Dialog>
               <template v-slot:button>Crear producto</template>
               <template v-slot:title>Crear producto</template>
@@ -81,9 +81,9 @@
           <p v-if="products.length == 0" class="mx-4">No hay productos.</p>
         </div>
         <div v-if="selected == 'components'" class="card-container">
-          <div class="mx-4 mb-2">
+          <div class="mx-4 mb-2 w-full flex flex-row">
             <Dialog>
-              <template v-slot:button>Crear componente</template>
+              <template v-slot:button><IconPlus/>Crear componente</template>
               <template v-slot:title>Crear componente</template>
               <template v-slot:form>
                 <label for="brand">Brand:</label><br>
@@ -99,6 +99,7 @@
                 <Button @click="addComponent()">Crear</Button>
               </template>
             </Dialog>
+            <Button @click="navigateTo('/admin/purchase')" class="ml-4 bg-slate-500"><IconCreditCard/>Comprar componentes</Button>
           </div>
           <InputText v-model:value="componentSearch" class="m-4" placeholder="Buscar componente" />
           <div v-for="component in filteredComponents" class="card">
@@ -148,8 +149,7 @@
             <p>Email: {{ user.email }}</p>
             <p>Address: {{ user.address }}</p>
             <p>IsAdmin: {{ user.isadmin }}</p>
-            <!-- Hacer que entre los dos botones haya una separación. No sé si es por la clase "card" -->
-            <Button @click="convertToAdmin(user)">Establecer administrador</Button>
+            <Button @click="convertToAdmin(user)">Convertir en admin</Button>
             <Button @click="removeUser(user.id)" class="bg-red-500">Eliminar usuario</Button>
           </div>
           <p v-if="users.length == 0" class="mx-4">No hay usuarios.</p>
@@ -189,6 +189,9 @@ const selected = ref(store.adminSelected)
 watch(selected, (newValue) => {
   store.setAdminSelected(newValue)
 })
+
+// Icons
+import { IconPlus, IconCreditCard } from '@tabler/icons-vue';
 
 // ██████╗░██████╗░░█████╗░██████╗░██╗░░░██╗░█████╗░████████╗░██████╗
 // ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║░░░██║██╔══██╗╚══██╔══╝██╔════╝

@@ -26,22 +26,19 @@
       </div>
       <div class="grow p-8 flex flex-wrap overflow-scroll">
         <div class="card-container">
-          <h2 class="w-full m-4 text-2xl font-bold">Crear producto</h2>
-          <div class="mx-4 mb-2">
-            <label for="name">Name:</label><br>
-            <InputText v-model:value="productFormData.name" name="name"/><br>
-            <label for="description">Description:</label>
-            <InputText v-model:value="productFormData.description" name="description"/><br>
-            <label for="quantity">Quantity:</label><br>
-            <InputNumber v-model:value="productFormData.quantity" name="quantity"/><br>
-            <label for="price">Price:</label><br>
-            <InputNumber v-model:value="productFormData.price" name="price"/><br>
-            <label for="url">URL:</label><br>
-            <InputText v-model:value="productFormData.url" name="url"/><br>
-            <label for="image">Image:</label><br>
-            <InputText v-model:value="productFormData.image" name="image"/><br>
-            <Button @click="addProduct()">Crear</Button>
+          <h2 class="w-full m-4 text-2xl font-bold">Comprar componentes</h2>
+          <InputText value="https://pcarp.onrender.com/products" placeholder="Purchase endpoint" />
+          <InputText v-model:value="componentSearch" class="m-4" placeholder="Buscar usuario" />
+          <div v-for="component in components" class="card">
+            <p><b>ID: {{ component.id }}</b></p>
+            <p>Brand: {{ component.brand }}</p>
+            <p>Model: {{ component.model }}</p>
+            <p>Description: {{ component.description }}</p>
+            <p>Quantity: {{ component.quantity }}</p>
+            <p>Price: {{ component.price }}</p>
+            <Button @click="purchase(component)">Comprar</Button>
           </div>
+          <p v-if="users.length == 0" class="mx-4">No hay componentes.</p>
         </div>
       </div>
     </div>
@@ -70,6 +67,10 @@ watch(selected, (newValue) => {
   navigateTo('/admin')
 })
 
+// Fetch components
+//const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
+const components = ref('sdf')
+
 const productFormData = ref({
   id: '',
   name: '',
@@ -79,25 +80,4 @@ const productFormData = ref({
   url: '',
   image: ''
 })
-
-async function addProduct(){
-  let result = await useFetch('http://localhost:3001/products', {
-    method: 'post',
-    headers: headers,
-    body: {
-      name: productFormData.value.name,
-      description: productFormData.value.description,
-      quantity: productFormData.value.quantity,
-      price: productFormData.value.price,
-      url: productFormData.value.url,
-      image: productFormData.value.image
-    }
-  })
-  if (result.status._value == "success") {
-    alert('Producto añadido exitosamente')
-    navigateTo('/admin')
-  } else {
-    alert('Error')
-  }
-}
 </script>
