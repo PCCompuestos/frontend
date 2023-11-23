@@ -33,7 +33,7 @@ async function login() {
   })
   if (result.status._value == "success") {
     const dataValue = result.data._value
-    if (dataValue == 'incorrect email or password') {
+    if (dataValue == 'Password does not match') {
       alert('Email o contraseña incorrectos.')
     } else {
       // Sucessful log in
