@@ -70,9 +70,6 @@ watch(selected, (newValue) => {
   navigateTo('/admin')
 })
 
-// Fetch products
-const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
-
 const productFormData = ref({
   id: '',
   name: '',
@@ -82,4 +79,25 @@ const productFormData = ref({
   url: '',
   image: ''
 })
+
+async function addProduct(){
+  let result = await useFetch('http://localhost:3001/products', {
+    method: 'post',
+    headers: headers,
+    body: {
+      name: productFormData.value.name,
+      description: productFormData.value.description,
+      quantity: productFormData.value.quantity,
+      price: productFormData.value.price,
+      url: productFormData.value.url,
+      image: productFormData.value.image
+    }
+  })
+  if (result.status._value == "success") {
+    alert('Producto añadido exitosamente')
+    navigateTo('/admin')
+  } else {
+    alert('Error')
+  }
+}
 </script>
