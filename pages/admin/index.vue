@@ -125,7 +125,7 @@
                 <Button @click="editComponent(component)">Editar</Button>
               </template>
             </Dialog>
-            <Button @click="removeComponent(component.code)" class="bg-red-500">Eliminar componente</Button>
+            <Button @click="removeComponent(component.id)" class="bg-red-500">Eliminar componente</Button>
           </div>
           <p v-if="components.length == 0" class="mx-4">No hay componentes.</p>
         </div>
@@ -349,12 +349,12 @@ async function editComponent(component) {
 }
 
 // No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
-async function removeComponent(code) {
-  await useFetch('http://localhost:3001/components/' + code, {
+async function removeComponent(id) {
+  await useFetch('http://localhost:3001/components/' + id, {
     method: 'delete',
     headers: headers
   })
-  components.value = components.value.filter(component => component.code !== code);
+  components.value = components.value.filter(component => component.id !== id);
 }
 
 // ░█████╗░██████╗░██████╗░███████╗██████╗░░██████╗
@@ -370,7 +370,8 @@ const orderSearch = ref('')
 const filteredOrders = computed(() => {
   return orders.value.filter(order =>
     order.id.toLowerCase().includes(orderSearch.value.toLowerCase()) ||
-    order.userid.toLowerCase().includes(orderSearch.value.toLowerCase())
+    order.userid.toLowerCase().includes(orderSearch.value.toLowerCase()) /*||
+    order.status.toLowerCase().includes(orderSearch.value.toLowerCase())*/
   );
 })
 
