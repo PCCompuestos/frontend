@@ -372,7 +372,8 @@ const orderSearch = ref('')
 const filteredOrders = computed(() => {
   return orders.value.filter(order =>
     order.id.toLowerCase().includes(orderSearch.value.toLowerCase()) ||
-    order.userid.toLowerCase().includes(orderSearch.value.toLowerCase())
+    order.userid.toLowerCase().includes(orderSearch.value.toLowerCase()) /*||
+    order.status.toLowerCase().includes(orderSearch.value.toLowerCase())*/
   );
 })
 
