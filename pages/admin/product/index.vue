@@ -25,7 +25,7 @@
         >Usuarios</div>
       </div>
       <div class="grow p-8 flex flex-wrap overflow-scroll">
-        <div v-if="selected == 'products'" class="card-container">
+        <div class="card-container">
           <h2 class="w-full m-4 text-2xl font-bold">Crear producto</h2>
           <div class="mx-4 mb-2">
             <label for="name">Name:</label><br>
