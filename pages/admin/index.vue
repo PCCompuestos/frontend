@@ -135,9 +135,7 @@
           <div v-for="order in filteredOrders" class="card">
             <p><b>OrderID: {{ order.id }}</b></p>
             <p>User: {{ order.userid }}</p>
-            <p>Quantity: {{ order.quantity }}</p>
             <p>Purchase date: {{ order.purchasedate }}</p>
-            <p>Purchase time: {{ order.purchasetime }}</p>
             <SelectMenu @change="(status) => updateOrderStatus(order.id, status)" :value="order.status" :options="orderStatusOptions" class="my-2"></SelectMenu>
             <Button @click="removeOrder(order.id)" class="bg-red-500">Eliminar pedido</Button>
           </div>

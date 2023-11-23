@@ -128,7 +128,7 @@
                   required
                   v-model="formData1.code"
                 >
-                <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="confirmacionPago">Pagar</button>
+                <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="confirmacionPago()">Pagar</button>
             </div>
           </div>
 
