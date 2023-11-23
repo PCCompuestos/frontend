@@ -3,7 +3,8 @@
   <Main>
     <div class="w-full max-w-4xl p-8 flex flex-row">
       <div class="w-1/2">
-        <img src="/images/computer.jpg" class="w-full rounded-lg">
+        <!-- <img src="/images/computer.jpg" class="w-full rounded-lg"> -->
+        <img :src='productData.image' alt="Product Image">
       </div>
       <div class="w-1/2 pl-8 flex flex-col items-start">
         <h1>{{ productData.name }}</h1>
@@ -55,7 +56,12 @@ async function anadirACarrito() {
   if (producto.status._value == "success") {
     const dataValue = [productData]; // Wrap dataValue in an array
     store.addToShoppingCart(dataValue);
-    alert("Producto añadido al carrito");
+    if(!store.token) {
+      alert("Producto añadido al carrito. \nPara ver tu carrito inicia sesión.");
+    }
+    else{
+      alert("Producto añadido al carrito");
+    }
   }
 }
 
