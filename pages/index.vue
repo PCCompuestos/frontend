@@ -47,10 +47,6 @@
           <label>Storage:</label>
           <Autocomplete :options="storageOptions" v-model:value="storageValue"></Autocomplete>
         </div>
-        <!-- <div>
-          <label>RAM</label>
-          <input type="range">
-        </div> -->
       </section>
     </div>
   </Main>
@@ -67,28 +63,28 @@ const graphicsValue = ref('NVIDIA GeForce RTX 3060 Ti')
 const storageValue = ref('Samsung EVO 500GB SSD')
 
 const cpuOptions = [
-  { value: 'Intel Core i5', text: 'Intel Core i5' },
   { value: 'Intel Core i7', text: 'Intel Core i7' },
-  { value: 'Intel Core i9', text: 'Intel Core i9' },
   { value: 'AMD Ryzen 5',   text: 'AMD Ryzen 5' },
+  { value: 'Intel Core i3', text: 'Intel Core i3' },
   { value: 'AMD Ryzen 7',   text: 'AMD Ryzen 7' },
+  { value: 'Intel Core i9', text: 'Intel Core i9' },
 ]
 
 const ramOptions = [
-  { value: 'DDR3 Kingston HyperX 8GB DDR3',        text: '8 GB', },
   { value: 'DDR4 Crucial Ballistix 16GB DDR4',     text:  '16 GB', },
   { value: 'DDR4 Corsair Vengeance LPX 32GB DDR4', text:  '32 GB', },
+  { value: 'DDR3 Kingston HyperX 8GB DDR3',        text: '8 GB', },
 ]
 
 const graphicsOptions = [
-  { value: 'NVIDIA GeForce RTX 3060 Ti', text: 'NVIDIA GeForce RTX 3060 Ti', },
+  { value: 'NVIDIA GeForce GTX 1660',  text: 'GTX 1660', },
   { value: 'AMD Radeon RX 570', text: 'AMD Radeon RX 570', },
-  { value: 'NVIDI GeForce GTX 1660',  text: 'GTX 1660', },
+  { value: 'NVIDIA GeForce RTX 3060 Ti', text: 'NVIDIA GeForce RTX 3060 Ti', },
 ]
 
 const storageOptions = [
-  { value: 'Samsung EVO 500GB SSD', text: '500 GB SSD' },
   { value: 'WD Blue 1TB HDD', text: '1 TB HDD', },
+  { value: 'Samsung EVO 500GB SSD', text: '500 GB SSD' },
   { value: 'Seagate Barracuda 2TB HDD', text:  '2 TB HDD', },
 ]
 
@@ -101,7 +97,7 @@ let result = await useFetch('http://localhost:3001/products')
 if (result.status._value == "success") {
   const dataValue = result.data._value
   products1_3 = dataValue.slice(0, 3)
-  console.log(products1_3)
+  // console.log(products1_3)
 } else {
   alert('Error al cargar los productos.')
 }
