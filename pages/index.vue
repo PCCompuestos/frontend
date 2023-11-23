@@ -10,42 +10,51 @@
     <!-- BEST SELLERS-->
     <div class="w-full flex flex-col items-center">
       <section class="w-full max-w-4xl p-8">
-        <h2 class="text-center text-3xl">Más Vendidos</h2>
+        <h2 class="text-center text-4xl">Más Vendidos</h2>
         <div class="py-6 flex flex-row justify-between">
-          <!-- La idea es poner de manera estática los 3 primeros productos de nuestra BD, con su imagen como link -->
-<!--          <a href="products.value.url[0]" class="h-52 w-52"><img src="products.value.image[0]"></a>   -->
-<!--          <a href="products.value.url[1]" class="h-52 w-52"><img src="products.value.image[1]"></a>   -->
-<!--          <a href="products.value.url[2]" class="h-52 w-52"><img src="products.value.image[2]"></a>   -->
-          <!-- Loop that shows 3 products stores in the variable products1_3 with a link to them -->
           <div v-for="product in products1_3" class="h-52 w-52 bg-gray-100">
-            <a :href="'product/'+product.url">
+            <a :href="'product/' + product.url">
               <img :src='product.image' alt="Product Image">
+              <div class="text-center">
+                <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+                <p class="text-base">{{ product.quantity }} available</p>
+                <p class="text-base">{{ product.price }}€</p>
+              </div>
             </a>
           </div>
-          <!-- 
-          <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
-          <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a>
-          <a href="product/Ordenador" class="h-52 w-52 bg-gray-100"></a> 
-          -->
         </div>
       </section>
-      <section class="w-full max-w-4xl p-8">
-        <h2 class="text-center text-3xl">Búsqueda personalizada</h2>
-        <div>
+    <!-- BUSQUEDA PERSONALIZADA-->
+      <section class="w-full max-w-4xl pt-14 pb-28">
+        <h2 class="text-center text-4xl pb-6">Búsqueda personalizada</h2>
+        <div class="pb-4">
           <label>CPU:</label>
           <Autocomplete :options="cpuOptions" v-model:value="cpuValue"></Autocomplete>
         </div>
-        <div>
+        <div class="pb-4">
           <label>RAM:</label>
           <Autocomplete :options="ramOptions" v-model:value="ramValue"></Autocomplete>
         </div>
-        <div>
+        <div class="pb-4">
           <label>Graphics:</label>
           <Autocomplete :options="graphicsOptions" v-model:value="graphicsValue"></Autocomplete>
         </div>
-        <div>
+        <div class="pb-4">
           <label>Storage:</label>
           <Autocomplete :options="storageOptions" v-model:value="storageValue"></Autocomplete>
+        </div>
+        <!-- DISPLAY RESULTADOS -->
+        <div>
+          <div v-for="product in resultSearch.value" class="h-52 w-52 bg-gray-100">
+            <a :href="'product/' + product.url">
+              <img :src='product.image' alt="Product Image">
+              <div class="text-center">
+                <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+                <p class="text-base">{{ product.quantity }} available</p>
+                <p class="text-base">{{ product.price }}€</p>
+              </div>
+            </a>
+          </div>
         </div>
       </section>
     </div>
@@ -64,20 +73,20 @@ const storageValue = ref('Samsung EVO 500GB SSD')
 
 const cpuOptions = [
   { value: 'Intel Core i7', text: 'Intel Core i7' },
-  { value: 'AMD Ryzen 5',   text: 'AMD Ryzen 5' },
+  { value: 'AMD Ryzen 5', text: 'AMD Ryzen 5' },
   { value: 'Intel Core i3', text: 'Intel Core i3' },
-  { value: 'AMD Ryzen 7',   text: 'AMD Ryzen 7' },
+  { value: 'AMD Ryzen 7', text: 'AMD Ryzen 7' },
   { value: 'Intel Core i9', text: 'Intel Core i9' },
 ]
 
 const ramOptions = [
-  { value: 'DDR4 Crucial Ballistix 16GB DDR4',     text:  '16 GB', },
-  { value: 'DDR4 Corsair Vengeance LPX 32GB DDR4', text:  '32 GB', },
-  { value: 'DDR3 Kingston HyperX 8GB DDR3',        text: '8 GB', },
+  { value: 'DDR4 Crucial Ballistix 16GB DDR4', text: '16 GB', },
+  { value: 'DDR4 Corsair Vengeance LPX 32GB DDR4', text: '32 GB', },
+  { value: 'DDR3 Kingston HyperX 8GB DDR3', text: '8 GB', },
 ]
 
 const graphicsOptions = [
-  { value: 'NVIDIA GeForce GTX 1660',  text: 'GTX 1660', },
+  { value: 'NVIDIA GeForce GTX 1660', text: 'GTX 1660', },
   { value: 'AMD Radeon RX 570', text: 'AMD Radeon RX 570', },
   { value: 'NVIDIA GeForce RTX 3060 Ti', text: 'NVIDIA GeForce RTX 3060 Ti', },
 ]
@@ -85,7 +94,7 @@ const graphicsOptions = [
 const storageOptions = [
   { value: 'WD Blue 1TB HDD', text: '1 TB HDD', },
   { value: 'Samsung EVO 500GB SSD', text: '500 GB SSD' },
-  { value: 'Seagate Barracuda 2TB HDD', text:  '2 TB HDD', },
+  { value: 'Seagate Barracuda 2TB HDD', text: '2 TB HDD', },
 ]
 
 let products1_3
@@ -94,6 +103,7 @@ let products1_3
 // the first 3 in the products1_3 variable slicing the array
 // async function fetchProducts() {
 let result = await useFetch('http://localhost:3001/products')
+
 if (result.status._value == "success") {
   const dataValue = result.data._value
   products1_3 = dataValue.slice(0, 3)
@@ -103,9 +113,9 @@ if (result.status._value == "success") {
 }
 // }
 
+const resultSearch = ref('')
 async function search() {
-  console.log('Buscar')
-  let result = await useFetch('http://localhost:3001/products/search', {
+  const { data } = await useFetch('http://localhost:3001/products/search', {
     method: 'post',
     body: {
       cpu: cpuValue.value,
@@ -114,7 +124,7 @@ async function search() {
       storage: storageValue.value
     }
   })
-  console.log(result)
+  resultSearch.value = data
 }
 
 watch(cpuValue, () => {
