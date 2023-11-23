@@ -27,24 +27,24 @@
     <!-- BUSQUEDA PERSONALIZADA-->
       <section class="w-full max-w-4xl pt-14 pb-28">
         <h2 class="text-center text-4xl pb-6">Búsqueda personalizada</h2>
-        <div class="pb-4">
+        <div class="pb-4 px-60">
           <label>CPU:</label>
           <Autocomplete :options="cpuOptions" v-model:value="cpuValue"></Autocomplete>
         </div>
-        <div class="pb-4">
+        <div class="pb-4 px-60">
           <label>RAM:</label>
           <Autocomplete :options="ramOptions" v-model:value="ramValue"></Autocomplete>
         </div>
-        <div class="pb-4">
+        <div class="pb-4 px-60">
           <label>Graphics:</label>
           <Autocomplete :options="graphicsOptions" v-model:value="graphicsValue"></Autocomplete>
         </div>
-        <div class="pb-4">
+        <div class="pb-4 px-60">
           <label>Storage:</label>
           <Autocomplete :options="storageOptions" v-model:value="storageValue"></Autocomplete>
         </div>
         <!-- DISPLAY RESULTADOS -->
-        <div>
+        <div class="pt-10">
           <div v-for="product in resultSearch.value" class="h-52 w-52 bg-gray-100">
             <a :href="'product/' + product.url">
               <img :src='product.image' alt="Product Image">
