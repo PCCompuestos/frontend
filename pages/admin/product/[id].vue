@@ -4,7 +4,7 @@
     <div class="w-full h-full flex flex-row">
       <div class="h-full flex-none w-52 flex flex-col border-r">
         <div 
-          @click="selected = 'products'"
+          @click="selected = 'products'; navigateTo('/admin')"
           :class="{ 'bg-gray-100': selected == 'products' }"
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Productos</div>
@@ -26,7 +26,7 @@
       </div>
       <div class="grow p-8 flex flex-wrap overflow-scroll">
         <div class="card-container">
-          <h2 class="w-full m-4 text-2xl font-bold">Editar producto</h2>
+          <h2 class="w-full m-4 text-2xl font-bold">Editar producto {{ product.id  }}</h2>
           <div class="mx-4 mb-2">
             <label for="name">Name:</label><br>
             <InputText v-model:value="productFormData.name" name="name"/><br>
@@ -59,6 +59,7 @@ definePageMeta({
 // Get token and set headers for queries
 import { useUserStore } from "~/stores"
 const store = useUserStore()
+const route = useRoute();
 const token = store.token
 const headers = {'Authorization': `Bearer ${token}`}
 
@@ -70,16 +71,20 @@ watch(selected, (newValue) => {
   navigateTo('/admin')
 })
 
-// Fetch products
-const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
+const productId = route.params.id
 
+// Fetch product by id
+const { data : product } = await useFetch('http://localhost:3001/products/id/' + productId, {headers: headers})
+
+console.log(product)
 const productFormData = ref({
-  id: '',
-  name: '',
-  description: '',
-  quantity: '',
-  price: '',
-  url: '',
-  image: ''
+  id: product.value.id,
+  name: product.value.name,
+  description: product.value.description,
+  quantity: product.value.quantity,
+  price: product.value.price,
+  url: product.value.url,
+  image: product.value.image
 })
+
 </script>
