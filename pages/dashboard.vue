@@ -4,23 +4,22 @@
     <div class="w-full h-full flex flex-row">
       <div class="h-full flex-none w-52 flex flex-col border-r">
         <div 
-          @click="selected = 'info'" 
-          class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-100"
+          @click="selected = 'info'"
+          :class="{ 'bg-gray-200': selected == 'info' }"
+          class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Información personal</div>
         <div 
           @click="selected = 'deliveries'" 
-          class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-100"
+          :class="{ 'bg-gray-200': selected == 'deliveries' }"
+          class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Pedidos</div>
-        <a href="settings" class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-100">Ajustes</a>
+        <a href="settings" class="pl-8 py-3 border-b cursor-pointer hover:bg-gray-200">Ajustes</a>
       </div>
       <div class="grow p-8 flex flex-col">
         <h1 class="pb-5">¡Hola {{ user.name }}!</h1>
       <!-- IFS PARA MOSTRAR UNA COSA U OTRA -->
         <div v-if="selected == 'info'" class="card">
-          <p>ID: {{ user.id }}</p>
           <p>Nombre: {{ user.name }}</p>
-          <p>Password: {{ user.password }}</p>
-          <p>isAdmin: {{ user.isAdmin }}</p>
           <p>email: {{ user.email }}</p>
           <p>address: {{ user.address }}</p>
         </div>
