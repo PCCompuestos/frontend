@@ -94,10 +94,10 @@ async function addProduct(){
     }
   })
   if (result.status._value == "success") {
-    alert('Producto añadido exitosamente')
+    //alert('Producto añadido exitosamente')
     navigateTo('/admin')
   } else {
-    alert('Error')
+    //alert('Error')
   }
 }
 </script>

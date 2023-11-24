@@ -102,10 +102,10 @@ async function updateUsername(newUsername){
     }
   })
   if(result.status._value == "success"){
-    alert(`¡Username changed successfully!`)
-    // alert(`Changing username from ${username} to ${newUsername}`)
+    //alert(`¡Username changed successfully!`)
+    // //alert(`Changing username from ${username} to ${newUsername}`)
   } else {
-    alert('Error changing username')
+    //alert('Error changing username')
   }
 }
 
@@ -123,12 +123,12 @@ async function handleUsernameChange() {
   if (await passwordMatches(password)) {
     updateUsername(newUsername);
   } else {
-    // Display an alert for incorrect username or password
-    alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
+    // Display an //alert for incorrect username or password
+    //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
   }
   // } else {
-    // Display an alert for incorrect username 
-    // alert('No existe ningún usuario con ese username.');
+    // Display an //alert for incorrect username 
+    // //alert('No existe ningún usuario con ese username.');
   // }
 }
 
@@ -145,16 +145,16 @@ async function handlePasswordChange() {
   // Check if the username exists and the password matches
   if (await userExists(username)) {
     if (await passwordMatches(password)) {
-      alert(`¡Password changed successfully!`)
-      // alert(`Changing password from ${password} to ${newPassword}`)
+      //alert(`¡Password changed successfully!`)
+      // //alert(`Changing password from ${password} to ${newPassword}`)
       // return true;
     } else {
-      // Display an alert for incorrect username or password
-      alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
+      // Display an //alert for incorrect username or password
+      //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
     }
   } else {
-    // Display an alert for incorrect username 
-    alert('No existe ningún usuario con ese username.');
+    // Display an //alert for incorrect username 
+    //alert('No existe ningún usuario con ese username.');
   }
 }
 </script>

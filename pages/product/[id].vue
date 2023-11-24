@@ -57,10 +57,10 @@ async function anadirACarrito() {
     const dataValue = [productData]; // Wrap dataValue in an array
     store.addToShoppingCart(dataValue);
     if(!store.token) {
-      alert("Producto añadido al carrito. \nPara ver tu carrito inicia sesión.");
+      //alert("Producto añadido al carrito. \nPara ver tu carrito inicia sesión.");
     }
     else{
-      alert("Producto añadido al carrito");
+      //alert("Producto añadido al carrito");
     }
   }
 }

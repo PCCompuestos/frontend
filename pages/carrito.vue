@@ -167,7 +167,7 @@ function calculateTotalPriceofShoppingCart() {
 
 function confirmacionPago() {
   if (formData1.value.cardNumber == '' || formData1.value.expirationDate == '' || formData1.value.code == '') {
-    alert('Rellena todos los campos')
+    //alert('Rellena todos los campos')
   } else {
     let wrongNumber = false
     let wrongDate = false
@@ -213,20 +213,20 @@ function confirmacionPago() {
     }
 
     if (wrongNumber == true) {
-      alert('Número de tarjeta incorrecto. Formato: XXXX-XXXX-XXXX-XXXX')
+      //alert('Número de tarjeta incorrecto. Formato: XXXX-XXXX-XXXX-XXXX')
       // console.log(wrongNumber)
     }
 
     if (wrongDate) {
-      alert('Fecha de caducidad incorrecta. Formato: MM/DD')
+      //alert('Fecha de caducidad incorrecta. Formato: MM/DD')
     }
 
     if (wrongCode) {
-      alert('Código de seguridad incorrecto. Formato: XXX')
+      //alert('Código de seguridad incorrecto. Formato: XXX')
     }
 
     if (!wrongNumber && !wrongDate && !wrongCode){
-      alert('Pago realizado con éxito')
+      //alert('Pago realizado con éxito')
     }
   }
 }
