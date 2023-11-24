@@ -34,18 +34,18 @@ async function login() {
   if (result.status._value == "success") {
     const dataValue = result.data._value
     if (dataValue == 'Password does not match') {
-      alert('Email o contraseña incorrectos.')
+      //alert('Email o contraseña incorrectos.')
     } else {
       // Sucessful log in
       store.setToken(dataValue.token)
       store.setUser(dataValue.user)
       store.setAdminSelected('users')
       console.log(store.user)
-      alert('Has iniciado sesión correctamente.')
+      //alert('Has iniciado sesión correctamente.')
       await navigateTo('/dashboard')
     }
   } else {
-    alert('Error al iniciar sesión.')
+    //alert('Error al iniciar sesión.')
   }
 }
 </script>

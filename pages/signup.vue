@@ -34,7 +34,7 @@ async function signup() {
     }
   })
   if (result.status._value == "success") {
-    alert('Te has registrado exitosamente')
+    //alert('Te has registrado exitosamente')
     window.location.href = 'login';
   }
 }

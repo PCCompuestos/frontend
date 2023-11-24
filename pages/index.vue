@@ -109,7 +109,7 @@ if (result.status._value == "success") {
   products1_3 = dataValue.slice(0, 3)
   // console.log(products1_3)
 } else {
-  alert('Error al cargar los productos.')
+  //alert('Error al cargar los productos.')
 }
 // }
 

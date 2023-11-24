@@ -46,6 +46,6 @@
 
 <script setup>
     function confirmacionPago() {
-        alert("Pago exitoso");
+        //alert("Pago exitoso");
     }
 </script>

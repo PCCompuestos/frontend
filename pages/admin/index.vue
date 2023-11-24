@@ -5,22 +5,22 @@
       <div class="h-full flex-none w-52 flex flex-col border-r">
         <div 
           @click="selected = 'products'"
-          :class="{ 'bg-gray-200': selected == 'products' }"
+          :class="{ 'bg-gray-100': selected == 'products' }"
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Productos</div>
         <div 
           @click="selected = 'components'"
-          :class="{ 'bg-gray-200': selected == 'components' }"
+          :class="{ 'bg-gray-100': selected == 'components' }"
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Componentes</div>
         <div 
           @click="selected = 'orders'"
-          :class="{ 'bg-gray-200': selected == 'orders' }"
+          :class="{ 'bg-gray-100': selected == 'orders' }"
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Pedidos</div>
         <div 
           @click="selected = 'users'" 
-          :class="{ 'bg-gray-200': selected == 'users' }"
+          :class="{ 'bg-gray-100': selected == 'users' }"
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Usuarios</div>
       </div>
@@ -237,9 +237,9 @@ async function addProduct(){
     }
   })
   if (result.status._value == "success") {
-    alert('Producto añadido exitosamente')
+    ////alert('Producto añadido exitosamente')
   } else {
-    alert('Error')
+    ////alert('Error')
   }
   // Set id
   productFormData.value.id = result.data._rawValue.rows[0].id
@@ -261,9 +261,9 @@ async function editProduct(product) {
     }
   })
   if (result.status._value == "success") {
-    alert('Éxito')
+    ////alert('Éxito')
   } else {
-    alert('Error')
+    ////alert('Error')
   }
 }
 
@@ -324,9 +324,9 @@ async function addComponent(){
     }
   })
   if (result.status._value == "success") {
-    alert('Componente añadido exitosamente')
+    ////alert('Componente añadido exitosamente')
   } else {
-    alert('Error')
+    ////alert('Error')
   }
   // Set id
   componentFormData.value.id = result.data._rawValue.rows[0].id
@@ -347,9 +347,9 @@ async function editComponent(component) {
     }
   })
   if (result.status._value == "success") {
-    alert('Éxito')
+    ////alert('Éxito')
   } else {
-    alert('Error')
+    ////alert('Error')
   }
 }
 
@@ -429,7 +429,7 @@ async function convertToAdmin(user) {
     }
   })
   if (result.status._value == "success") {
-    alert('Usuario convertido a administrador')
+    ////alert('Usuario convertido a administrador')
   }
 }
 
