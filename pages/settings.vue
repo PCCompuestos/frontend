@@ -51,6 +51,7 @@ const store = useUserStore()
 const token = store.token
 const user = store.user
 const headers = {'Authorization': `Bearer ${token}`}
+const { data: usuario } = await useFetch('http://localhost:3001/users/' + user.id, {headers: headers})
 
 const formData1 = ref({
   password: '',
@@ -76,31 +77,21 @@ const formData2 = ref({
 // }
 
 async function passwordMatches(password) {
-  let result = await fetch('http://localhost:3001/users/' + user.id, {
-    method: 'get',
-    headers: headers,
-  })
-  console.log(result)
-  // if (password == result.password) {
-  //   return true; // Password matches
-  // }
-
-  return false; // Password does not match
+  let realPassword = usuario._rawValue.password
+  return password == realPassword; // Password does not match
 }
 
 async function updateUsername(newUsername){
+  console.log(newUsername);
   // console.log(users._rawValue[userIndex].id)
-  let result = await fetch('http://localhost:3001/users/' + user.id, {
+  let result = await fetch('http://localhost:3001/users/' + user.id + '/setName', {
     method: 'put',
     headers: headers,
     body: {
       name: newUsername,
-      password: user.password,
-      isadmin: user.isadmin,
-      email: user.email,
-      address: user.address
     }
   })
+  
   if(result.status._value == "success"){
     alert(`¡Username changed successfully!`)
     // alert(`Changing username from ${username} to ${newUsername}`)
