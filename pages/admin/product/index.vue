@@ -4,7 +4,7 @@
     <div class="w-full h-full flex flex-row">
       <div class="h-full flex-none w-52 flex flex-col border-r">
         <div 
-          @click="selected = 'products'"
+          @click="selected = 'products'; navigateTo('/admin')"
           :class="{ 'bg-gray-100': selected == 'products' }"
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Productos</div>

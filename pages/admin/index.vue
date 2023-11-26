@@ -24,11 +24,11 @@
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Usuarios</div>
       </div>
-      <div class="grow p-8 flex flex-wrap overflow-scroll">
+      <div class="grow p-8 flex flex-wrap overflow-y-scroll overflow-x-hidden">
         <div v-if="selected == 'products'" class="card-container">
           <div class="mx-4 mb-2">
-            <Button @click="navigateTo('/admin/product')"><IconPlus/>Crear producto</Button>
-            <!--<Dialog>
+            <!--<Button @click="navigateTo('/admin/product')"><IconPlus/>Crear producto</Button>-->
+            <Dialog>
               <template v-slot:button>Crear producto</template>
               <template v-slot:title>Crear producto</template>
               <template v-slot:form>
@@ -46,7 +46,7 @@
                 <InputText v-model:value="productFormData.image" name="image"/><br>
                 <Button @click="addProduct()">Crear</Button>
               </template>
-            </Dialog>-->
+            </Dialog>
           </div>
           <InputText v-model:value="productSearch" class="m-4" placeholder="Buscar producto" />
           <div v-for="product in filteredProducts" class="card">

@@ -41,7 +41,6 @@ async function login() {
   if (result.status._value == "success") {
     const dataValue = result.data._value
     if (dataValue == 'Password does not match') {
-      //alert('Email o contraseña incorrectos.')
       loginStatus.value = 'incorrectData'
     } else {
       // Sucessful log in
@@ -49,11 +48,9 @@ async function login() {
       store.setUser(dataValue.user)
       store.setAdminSelected('users')
       loginStatus.value = 'success'
-      //alert('Has iniciado sesión correctamente.')
       await navigateTo('/dashboard')
     }
   } else {
-    //alert('Error al iniciar sesión.')
     loginStatus.value = 'error'
   }
 }
