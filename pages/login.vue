@@ -8,7 +8,12 @@
         <InputText type="password" placeholder="Contraseña" v-model:value="formData.password"></InputText>
         <Button @click="login">Entrar</Button>
       </div>
-      <p>Aún no tengo cuenta, <a href="signup" class="underline text-primary">registrarme</a>.</p>
+      <p class="mb-4">Aún no tengo cuenta, <a href="signup" class="underline text-primary">registrarme</a>.</p>
+      <p v-if="loginStatus == 'success'" class="text-green-500">Has iniciado sesión correctamente.</p>
+      <p v-if="loginStatus == 'incorrectData'" class="text-red-500">Email o contraseña incorrectos</p>
+      <p v-if="loginStatus == 'error'" class="text-red-500">
+        Error al iniciar sesión. Vuelve a intentarlo de nuevo.
+      </p>
     </div>
   </Main>
   <Footer></Footer>
@@ -23,6 +28,8 @@ const formData = ref({
   password: ''
 })
 
+const loginStatus = ref()
+
 async function login() {
   let result = await useFetch('http://localhost:3001/users/login', {
     method: 'post',
@@ -35,17 +42,19 @@ async function login() {
     const dataValue = result.data._value
     if (dataValue == 'Password does not match') {
       //alert('Email o contraseña incorrectos.')
+      loginStatus.value = 'incorrectData'
     } else {
       // Sucessful log in
       store.setToken(dataValue.token)
       store.setUser(dataValue.user)
       store.setAdminSelected('users')
-      console.log(store.user)
+      loginStatus.value = 'success'
       //alert('Has iniciado sesión correctamente.')
       await navigateTo('/dashboard')
     }
   } else {
     //alert('Error al iniciar sesión.')
+    loginStatus.value = 'error'
   }
 }
 </script>
