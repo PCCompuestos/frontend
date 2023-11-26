@@ -84,15 +84,16 @@ async function passwordMatches(password) {
 async function updateUsername(newUsername){
   console.log(newUsername);
   // console.log(users._rawValue[userIndex].id)
-  let result = await fetch('http://localhost:3001/users/' + user.id + '/setName', {
+  let result = await useFetch('http://localhost:3001/users/' + user.id + '/setName', {
     method: 'put',
     headers: headers,
     body: {
-      name: newUsername,
+      name: newUsername
     }
   })
   
   if(result.status._value == "success"){
+    console.log("Cambio de username exitoso");
     //alert(`¡Username changed successfully!`)
     // //alert(`Changing username from ${username} to ${newUsername}`)
   } else {
@@ -123,10 +124,27 @@ async function handleUsernameChange() {
   // }
 }
 
+async function updatePassword(newPassword){
+  let result = await useFetch('http://localhost:3001/users/' + user.id + '/setPassword', {
+    method: 'put',
+    headers: headers,
+    body: {
+      password: newPassword
+    }
+  })
+  
+  if(result.status._value == "success"){
+    console.log("Cambio de contraseña exitoso");
+    //alert(`¡Username changed successfully!`)
+    // //alert(`Changing username from ${username} to ${newUsername}`)
+  } else {
+    //alert('Error changing username')
+  }
+
+}
 
 // Function to handle the password change
 async function handlePasswordChange() {
-  const username = formData2.value.name;
   const password = formData2.value.password;
   const newPassword = formData2.value.newPassword;
 
@@ -134,8 +152,9 @@ async function handlePasswordChange() {
   // You can use the fetched data from the server to verify the username and password
 
   // Check if the username exists and the password matches
-  if (await userExists(username)) {
+  // if (await userExists(username)) {
     if (await passwordMatches(password)) {
+      updatePassword(newPassword);
       //alert(`¡Password changed successfully!`)
       // //alert(`Changing password from ${password} to ${newPassword}`)
       // return true;
@@ -143,9 +162,9 @@ async function handlePasswordChange() {
       // Display an //alert for incorrect username or password
       //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
     }
-  } else {
+  // } else {
     // Display an //alert for incorrect username 
     //alert('No existe ningún usuario con ese username.');
-  }
+  // }
 }
 </script>
