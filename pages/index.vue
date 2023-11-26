@@ -44,8 +44,8 @@
           <Autocomplete :options="storageOptions" v-model:value="storageValue"></Autocomplete>
         </div>
         <!-- DISPLAY RESULTADOS -->
-        <div class="pt-10">
-          <div v-for="product in resultSearch.value" class="h-52 w-52 bg-gray-100">
+        <div class="pt-10 flex flex-wrap justify-center">
+          <div v-for="product in resultSearch.value" class="h-52 w-52 bg-gray-100 ">
             <a :href="'product/' + product.url">
               <img :src='product.image' alt="Product Image">
               <div class="text-center">
