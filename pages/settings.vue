@@ -51,7 +51,6 @@
 </template>
 
 <script setup>
-//FALTA IMPLEMENTAR QUE EL CAMBIO SE HAGA EFECTIVO EN LA BD
 
 import { useUserStore } from "~/stores"
 const store = useUserStore()
@@ -97,7 +96,8 @@ async function updateUsername(newUsername){
     method: 'put',
     headers: headers,
     body: {
-      name: newUsername
+      // name: newUsername
+      name: null
     }
   })
   
