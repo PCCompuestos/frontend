@@ -20,6 +20,9 @@
           v-model="formData1.newUserName"
         >
         <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="handleUsernameChange()">Aplicar</button>
+        <br>
+        <p v-if="settingsStatus == 'usernameChangedSuccessfully'" class="text-green-500">Cambio de username exitoso.</p>
+        <p v-if="settingsStatus == 'incorrectPassword1'" class="text-red-500">La contraseña no coincide, prueba de nuevo.</p>
       </div>      
       <div class="py-5 w-80 flex flex-col items-center">
         <div class="w-full justify-start">Cambio contraseña</div>
@@ -38,6 +41,10 @@
           v-model="formData2.newPassword"
         >
         <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="handlePasswordChange()">Aplicar</button>
+        <br>
+        <p v-if="settingsStatus == 'passwordChangedSuccessfully'" class="text-green-500">Cambio de contraseña exitoso.</p>
+        <p v-if="settingsStatus == 'incorrectPassword2'" class="text-red-500">La contraseña no coincide, prueba de nuevo.</p>
+
       </div>
     </div>
   </Main>
@@ -62,6 +69,8 @@ const formData2 = ref({
   password: '',
   newPassword: '',
 })
+
+const settingsStatus = ref()
 
 
 // async function userExists(user) {
@@ -93,7 +102,8 @@ async function updateUsername(newUsername){
   })
   
   if(result.status._value == "success"){
-    console.log("Cambio de username exitoso");
+    settingsStatus.value = 'usernameChangedSuccessfully'
+    // console.log("Cambio de username exitoso");
     //alert(`¡Username changed successfully!`)
     // //alert(`Changing username from ${username} to ${newUsername}`)
   } else {
@@ -115,6 +125,7 @@ async function handleUsernameChange() {
   if (await passwordMatches(password)) {
     updateUsername(newUsername);
   } else {
+    settingsStatus.value = 'incorrectPassword1'
     // Display an //alert for incorrect username or password
     //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
   }
@@ -134,6 +145,7 @@ async function updatePassword(newPassword){
   })
   
   if(result.status._value == "success"){
+    settingsStatus.value = 'passwordChangedSuccessfully'
     console.log("Cambio de contraseña exitoso");
     //alert(`¡Username changed successfully!`)
     // //alert(`Changing username from ${username} to ${newUsername}`)
@@ -159,6 +171,7 @@ async function handlePasswordChange() {
       // //alert(`Changing password from ${password} to ${newPassword}`)
       // return true;
     } else {
+      settingsStatus.value = 'incorrectPassword2'
       // Display an //alert for incorrect username or password
       //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
     }
