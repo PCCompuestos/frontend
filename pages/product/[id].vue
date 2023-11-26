@@ -32,6 +32,8 @@
         <!-- <a href="../carrito" class="bg-primary p-2.5 my-3 rounded-lg font-bold text-white" @onClick="añadirACarrito()">Comprar</a> -->
       </div>
     </div>
+    <p v-if="productStatus == 'successNotLoggedIn'" class="text-green-500">Producto añadido al carrito. Para ver tu carrito inicia sesión.</p>
+    <p v-if="productStatus == 'success'" class="text-green-500">Producto añadido al carrito.</p>
   </Main>
   <Footer></Footer>
 </template>
@@ -41,7 +43,7 @@ import { useUserStore } from "~/stores"
 const route = useRoute();
 const store = useUserStore()
 
-
+const productStatus = ref()
 const quantity = ref(1)
 
 let producto = await useFetch('http://localhost:3001/products/' + route.params.id)
@@ -57,9 +59,11 @@ async function anadirACarrito() {
     const dataValue = [productData]; // Wrap dataValue in an array
     store.addToShoppingCart(dataValue);
     if(!store.token) {
+      productStatus.value = 'successNotLoggedIn'
       //alert("Producto añadido al carrito. \nPara ver tu carrito inicia sesión.");
     }
     else{
+      productStatus.value = 'success'
       //alert("Producto añadido al carrito");
     }
   }

@@ -4,7 +4,7 @@
     <!-- Uso de clases de Tailwind, combinadas con flex -->
     <div class="w-full max-w-4xl p-8 flex flex-col items-center">
       <!-- En un futuro el "Ordenador1" cambiarlo por el ID del producto para cambiar según el producto -->
-      <div class="text-center">
+      <div class="flex flex-col items-center">
           <h1 class="text-center py-4">Carrito de la compra:</h1>
           <!-- Ejecutar en un bucle el listado de productos que hay añadidos junto a su precio,
                 mostrando al final el precio total a pagar -->
