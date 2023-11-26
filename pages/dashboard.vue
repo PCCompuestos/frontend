@@ -20,8 +20,8 @@
       <!-- IFS PARA MOSTRAR UNA COSA U OTRA -->
         <div v-if="selected == 'info'" class="card">
           <p>Nombre: {{ user.name }}</p>
-          <p>email: {{ user.email }}</p>
-          <p>address: {{ user.address }}</p>
+          <p>Email: {{ user.email }}</p>
+          <p>Dirección: {{ user.address }}</p>
         </div>
         <div v-if="selected == 'deliveries'">
           <div v-for="order in orders" class="card">

@@ -20,6 +20,9 @@
           v-model="formData1.newUserName"
         >
         <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="handleUsernameChange()">Aplicar</button>
+        <br>
+        <p v-if="settingsStatus == 'usernameChangedSuccessfully'" class="text-green-500">Cambio de username exitoso.</p>
+        <p v-if="settingsStatus == 'incorrectPassword1'" class="text-red-500">La contraseña no coincide, prueba de nuevo.</p>
       </div>      
       <div class="py-5 w-80 flex flex-col items-center">
         <div class="w-full justify-start">Cambio contraseña</div>
@@ -38,6 +41,10 @@
           v-model="formData2.newPassword"
         >
         <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="handlePasswordChange()">Aplicar</button>
+        <br>
+        <p v-if="settingsStatus == 'passwordChangedSuccessfully'" class="text-green-500">Cambio de contraseña exitoso.</p>
+        <p v-if="settingsStatus == 'incorrectPassword2'" class="text-red-500">La contraseña no coincide, prueba de nuevo.</p>
+
       </div>
     </div>
   </Main>
@@ -63,6 +70,8 @@ const formData2 = ref({
   newPassword: '',
 })
 
+const settingsStatus = ref()
+
 
 // async function userExists(user) {
 
@@ -84,15 +93,17 @@ async function passwordMatches(password) {
 async function updateUsername(newUsername){
   console.log(newUsername);
   // console.log(users._rawValue[userIndex].id)
-  let result = await fetch('http://localhost:3001/users/' + user.id + '/setName', {
+  let result = await useFetch('http://localhost:3001/users/' + user.id + '/setName', {
     method: 'put',
     headers: headers,
     body: {
-      name: newUsername,
+      name: newUsername
     }
   })
   
   if(result.status._value == "success"){
+    settingsStatus.value = 'usernameChangedSuccessfully'
+    // console.log("Cambio de username exitoso");
     //alert(`¡Username changed successfully!`)
     // //alert(`Changing username from ${username} to ${newUsername}`)
   } else {
@@ -114,6 +125,7 @@ async function handleUsernameChange() {
   if (await passwordMatches(password)) {
     updateUsername(newUsername);
   } else {
+    settingsStatus.value = 'incorrectPassword1'
     // Display an //alert for incorrect username or password
     //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
   }
@@ -123,10 +135,28 @@ async function handleUsernameChange() {
   // }
 }
 
+async function updatePassword(newPassword){
+  let result = await useFetch('http://localhost:3001/users/' + user.id + '/setPassword', {
+    method: 'put',
+    headers: headers,
+    body: {
+      password: newPassword
+    }
+  })
+  
+  if(result.status._value == "success"){
+    settingsStatus.value = 'passwordChangedSuccessfully'
+    console.log("Cambio de contraseña exitoso");
+    //alert(`¡Username changed successfully!`)
+    // //alert(`Changing username from ${username} to ${newUsername}`)
+  } else {
+    //alert('Error changing username')
+  }
+
+}
 
 // Function to handle the password change
 async function handlePasswordChange() {
-  const username = formData2.value.name;
   const password = formData2.value.password;
   const newPassword = formData2.value.newPassword;
 
@@ -134,18 +164,20 @@ async function handlePasswordChange() {
   // You can use the fetched data from the server to verify the username and password
 
   // Check if the username exists and the password matches
-  if (await userExists(username)) {
+  // if (await userExists(username)) {
     if (await passwordMatches(password)) {
+      updatePassword(newPassword);
       //alert(`¡Password changed successfully!`)
       // //alert(`Changing password from ${password} to ${newPassword}`)
       // return true;
     } else {
+      settingsStatus.value = 'incorrectPassword2'
       // Display an //alert for incorrect username or password
       //alert('Contraseña incorrecta. Por favor, verifica e intenta de nuevo.');
     }
-  } else {
+  // } else {
     // Display an //alert for incorrect username 
     //alert('No existe ningún usuario con ese username.');
-  }
+  // }
 }
 </script>

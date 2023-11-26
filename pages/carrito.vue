@@ -1,30 +1,104 @@
+<template>
+  <Header></Header>
+    <Main>
+    <!-- Uso de clases de Tailwind, combinadas con flex -->
+    <div class="w-full max-w-4xl p-8 flex flex-col items-center">
+      <!-- En un futuro el "Ordenador1" cambiarlo por el ID del producto para cambiar según el producto -->
+      <div class="text-center">
+          <h1 class="text-center py-4">Carrito de la compra:</h1>
+          <!-- Ejecutar en un bucle el listado de productos que hay añadidos junto a su precio,
+                mostrando al final el precio total a pagar -->
+          <div v-for="product in shoppingCart">
+            <p>{{ product.name }}: {{ product.price }}€</p>
+          </div> <br>
+          <!-- Mostrar el precio total de la compra -->
+          <p v-if="total == 0" class="font-semibold italic">VACÍO</p>
+          <p v-else-if="total > 0" class="font-semibold underline">Precio total: {{ total }}€</p>
+          <br>
+          <Button v-if="total > 0" @click="store.clearShoppingCart()">Eliminar carrito</Button>
+      </div>
+
+      <h1 class="text-center py-5">Detalles de pago</h1>
+      <div class="container">
+        <div class="col-50 py-5 px-5 w-80">
+            <p class="w-full font-bold">Datos de facturación</p>
+            <div class="flex flex-row items-center">
+                <label class="pr-4" for="Nombre">Nombre:</label>
+                <input 
+                    id="Nombre"
+                    type="text" 
+                    class="input_box" 
+                    placeholder="Pepito Pérez Ramos" 
+                    required
+                    :value="user.name"
+                >
+            </div>
+            <div class="flex flex-row items-center">
+                <label class="pr-4" for="email">Mail:</label>
+                <input
+                    id="email"
+                    type="text" 
+                    class="input_box" 
+                    placeholder="pepito@gmail.com"
+                    required
+                    :value="user.email"
+                >
+            </div>
+            <div class="flex flex-row items-center">
+                <label class="pr-4" for="dir">Dirección:</label>
+                <input 
+                    id="dir"
+                    type="text"
+                    class="input_box" 
+                    placeholder="c/ Maria de Luna, 22, 1ºA"
+                    required
+                    :value="user.address"
+                >
+            </div>
+        </div>
+        <div class="col-50 py-5 px-5 w-80 flex flex-col items-center">
+            <p class="w-full font-bold">Tarjeta de crédito</p>
+            <input 
+              type="text" 
+              class="input_box" 
+              placeholder="XXXX-XXXX-XXXX-XXXX" 
+              required
+              v-model="formData1.cardNumber"
+            >
+            <input 
+              type="text" 
+              class="input_box" 
+              placeholder="MM/DD"
+              required
+              v-model="formData1.expirationDate"
+            >
+            <input 
+              type="password"
+              class="input_box" 
+              placeholder="CVV"
+              required
+              v-model="formData1.code"
+            >
+            <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="confirmacionPago()">Pagar</button>
+        </div>
+      </div>
+      <p v-if="shoppingCartStatus == 'wrongNumber&Date&Code'" class="text-red-500">Los datos de la tarjeta son incorrectos, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'wrongNumber&Date'" class="text-red-500">El número de tarjeta y la fecha de caducidad son incorrectos, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'wrongNumber&Code'" class="text-red-500">El número de tarjeta y el código de seguridad son incorrectos, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'wrongDate&Code'" class="text-red-500">La fecha de caducidad y el código de seguridad son incorrectos, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'wrongNumber'" class="text-red-500">El número de tarjeta es incorrecto, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'wrongDate'" class="text-red-500">La fecha de caducidad es incorrecta, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'wrongCode'" class="text-red-500">El código de seguridad es incorrecto, prueba de nuevo.</p>
+      <p v-if="shoppingCartStatus == 'success'" class="text-green-500">Pago realizado con éxito.</p>
+    </div>
+  </Main>
+  <Footer></Footer>
+</template>
+  
 <!-- Definición de estilos para no reutilizar código -->
 <style>
   .input_box{
     @apply  w-full p-2.5 my-1 border-0 ring-1 ring-inset ring-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary text-gray-900 rounded-lg;
-  }
-
-  ul.breadcrumb {    /* Estilo de la lista */
-    padding: 10px 16px;
-    list-style: none;
-    background-color: #eee;
-  }
-  ul.breadcrumb li {  /* Estilo de los elementos de la lista */
-    display: inline;
-    font-size: 18px;
-  }
-  ul.breadcrumb li+li:before {   /* Separador de elementos */
-    padding: 8px;
-    color: black;
-    content: "/\00a0";
-  }
-  ul.breadcrumb li a {   /* Link sin cursor sobre encima */
-    color: #0275d8;
-    text-decoration: none;
-  }
-  ul.breadcrumb li a:hover {  /* Link con cursor sobre encima */
-    color: #01447e;
-    text-decoration: underline;
   }
 
   .container {
@@ -40,105 +114,8 @@
   }
 </style>
 
-
-<template>
-    <Header></Header>
-      <Main>
-        <!-- <ul class="breadcrumb">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Productos</a></li>
-        <li>Comprar</li>
-        </ul> -->
-
-          <!-- Uso de clases de Tailwind, combinadas con flex -->
-          <div class="w-full max-w-4xl p-8 flex flex-col items-center">
-          <!-- En un futuro el "Ordenador1" cambiarlo por el ID del producto para cambiar según el producto -->
-          <div class="text-center">
-              <h1 class="text-center py-4">Carrito de la compra:</h1>
-              <!-- Ejecutar en un bucle el listado de productos que hay añadidos junto a su precio,
-                    mostrando al final el precio total a pagar -->
-              <div v-for="product in shoppingCart">
-                <p>{{ product.name }}: {{ product.price }}€</p>
-              </div> <br>
-              <!-- Mostrar el precio total de la compra -->
-              <p v-if="total == 0" class="font-semibold italic">VACÍO</p>
-              <p v-else-if="total > 0" class="font-semibold underline">Precio total: {{ total }}€</p>
-              <br>
-              <Button v-if="total > 0" @click="store.clearShoppingCart()">Eliminar carrito</Button>
-          </div>
-
-          <h1 class="text-center py-5">Detalles de pago</h1>
-          <div class="container">
-            <div class="col-50 py-5 px-5 w-80">
-                <p class="w-full font-bold">Datos de facturación</p>
-                <div class="flex flex-row items-center">
-                    <label class="pr-4" for="Nombre">Nombre:</label>
-                    <input 
-                        id="Nombre"
-                        type="text" 
-                        class="input_box" 
-                        placeholder="Pepito Pérez Ramos" 
-                        required
-                        :value="user.name"
-                    >
-                </div>
-                <div class="flex flex-row items-center">
-                    <label class="pr-4" for="email">Mail:</label>
-                    <input
-                        id="email"
-                        type="text" 
-                        class="input_box" 
-                        placeholder="pepito@gmail.com"
-                        required
-                        :value="user.email"
-                    >
-                </div>
-                <div class="flex flex-row items-center">
-                    <label class="pr-4" for="dir">Dirección:</label>
-                    <input 
-                        id="dir"
-                        type="text"
-                        class="input_box" 
-                        placeholder="c/ Maria de Luna, 22, 1ºA"
-                        required
-                        :value="user.address"
-                    >
-                </div>
-            </div>
-            <div class="col-50 py-5 px-5 w-80 flex flex-col items-center">
-                <p class="w-full font-bold">Tarjeta de crédito</p>
-                <input 
-                  type="text" 
-                  class="input_box" 
-                  placeholder="XXXX-XXXX-XXXX-XXXX" 
-                  required
-                  v-model="formData1.cardNumber"
-                >
-                <input 
-                  type="text" 
-                  class="input_box" 
-                  placeholder="MM/DD"
-                  required
-                  v-model="formData1.expirationDate"
-                >
-                <input 
-                  type="password"
-                  class="input_box" 
-                  placeholder="CVV"
-                  required
-                  v-model="formData1.code"
-                >
-                <button class="bg-primary p-2.5 my-1 rounded-lg font-bold text-white" @click="confirmacionPago()">Pagar</button>
-            </div>
-          </div>
-
-  <!--         <p>Aún no tengo cuenta, <a href="signup" class="underline text-primary">regístrarme</a>.</p>-->
-        </div>
-      </Main>
-      <Footer></Footer>
-    </template>
   
-  
+
 <script setup>
 
 import { useUserStore } from "~/stores"
@@ -149,7 +126,8 @@ const shoppingCart = store.shoppingCart
 
 let total = calculateTotalPriceofShoppingCart()
 
-console.log(total)
+const shoppingCartStatus = ref()
+
 
 const formData1 = ref({
   cardNumber: '',
@@ -164,6 +142,7 @@ function calculateTotalPriceofShoppingCart() {
   }
   return totalPrice
 }
+
 
 function confirmacionPago() {
   if (formData1.value.cardNumber == '' || formData1.value.expirationDate == '' || formData1.value.code == '') {
@@ -212,21 +191,18 @@ function confirmacionPago() {
       wrongCode = true
     }
 
-    if (wrongNumber == true) {
-      //alert('Número de tarjeta incorrecto. Formato: XXXX-XXXX-XXXX-XXXX')
-      // console.log(wrongNumber)
-    }
-
-    if (wrongDate) {
-      //alert('Fecha de caducidad incorrecta. Formato: MM/DD')
-    }
-
-    if (wrongCode) {
-      //alert('Código de seguridad incorrecto. Formato: XXX')
-    }
-
-    if (!wrongNumber && !wrongDate && !wrongCode){
-      //alert('Pago realizado con éxito')
+    if (wrongNumber && wrongDate && wrongCode) shoppingCartStatus.value = 'wrongNumber&Date&Code' 
+    else if (wrongNumber && wrongDate && !wrongCode) shoppingCartStatus.value = 'wrongNumber&Date'
+    else if (wrongNumber && !wrongDate && wrongCode) shoppingCartStatus.value = 'wrongNumber&Code'
+    else if (!wrongNumber && wrongDate && wrongCode) shoppingCartStatus.value = 'wrongDate&Code'
+    else if (wrongNumber && !wrongDate && !wrongCode) shoppingCartStatus.value = 'wrongNumber'
+    else if (!wrongNumber && wrongDate && !wrongCode) shoppingCartStatus.value = 'wrongDate'
+    else if (!wrongNumber && !wrongDate && wrongCode) shoppingCartStatus.value = 'wrongCode'
+    else if (!wrongNumber && !wrongDate && !wrongCode) {
+      shoppingCartStatus.value = 'success'
+      // doOrderEffective();
+      store.clearShoppingCart()
+      window.location.href = '/dashboard'
     }
   }
 }
