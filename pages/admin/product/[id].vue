@@ -24,9 +24,9 @@
           class="pl-6 py-3 border-b cursor-pointer hover:bg-gray-200"
         >Usuarios</div>
       </div>
-      <div class="grow p-8 flex flex-wrap overflow-scroll">
-        <div class="card-container">
-          <h2 class="w-full m-4 text-2xl font-bold">Editar producto {{ product.id  }}</h2>
+      <div class="grow p-8 flex flex-col items-baseline overflow-y-scroll overflow-x-hidden">
+        <div>
+          <h2 class="m-4 text-2xl font-bold">Editar producto {{ product.id  }}</h2>
           <div class="mx-4 mb-2">
             <label for="name">Name:</label><br>
             <InputText v-model:value="productFormData.name" name="name"/><br>
@@ -40,7 +40,18 @@
             <InputText v-model:value="productFormData.url" name="url"/><br>
             <label for="image">Image:</label><br>
             <InputText v-model:value="productFormData.image" name="image"/><br>
-            <Button @click="addProduct()">Editar</Button>
+            <Button @click="addProduct()">Editar producto</Button>
+          </div>
+        </div>
+        <div class="mx-4 mb-2 w-full flex flex-row">
+          <Button @click="navigateTo('/admin/purchase')" class="ml-4 bg-slate-500"><IconPlus/>Añadir componente</Button>
+        </div>
+        <div class="card-container">
+          <div v-for="component in components" class="card">
+            <p><b>ComponentID: {{ component.componentid }}</b></p>
+            <p>Name: {{ component.componentname }}</p>
+            <p>Type: {{ component.componenttype }}</p>
+            <Button @click="removeComponent(component.componentid)" class="bg-red-500">Eliminar componente</Button>
           </div>
         </div>
       </div>
@@ -55,6 +66,9 @@ definePageMeta({
     'auth',
   ],
 })
+
+// Icons
+import { IconPlus } from '@tabler/icons-vue';
 
 // Get token and set headers for queries
 import { useUserStore } from "~/stores"
@@ -73,10 +87,10 @@ watch(selected, (newValue) => {
 
 const productId = route.params.id
 
-// Fetch product by id
+// Fetch product by id and its components
 const { data : product } = await useFetch('http://localhost:3001/products/id/' + productId, {headers: headers})
+const { data : components } = await useFetch('http://localhost:3001/products/' + productId + '/components', {headers: headers})
 
-console.log(product)
 const productFormData = ref({
   id: product.value.id,
   name: product.value.name,
@@ -86,5 +100,13 @@ const productFormData = ref({
   url: product.value.url,
   image: product.value.image
 })
+
+const removeComponent = async (componentId) => {
+  await useFetch('http://localhost:3001/products/' + productId + '/components/' + componentId, {
+    method: 'delete',
+    headers: headers
+  })
+  components.value = components.value.filter(component => component.componentid !== componentId);
+}
 
 </script>
