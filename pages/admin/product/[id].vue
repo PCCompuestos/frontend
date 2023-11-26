@@ -40,14 +40,22 @@
             <InputText v-model:value="productFormData.url" name="url"/><br>
             <label for="image">Image:</label><br>
             <InputText v-model:value="productFormData.image" name="image"/><br>
-            <Button @click="addProduct()">Editar producto</Button>
+            <Button @click="addProduct()" class="bg-slate-500">Editar producto</Button>
           </div>
         </div>
-        <div class="mx-4 mb-2 w-full flex flex-row">
-          <Button @click="navigateTo('/admin/purchase')" class="ml-4 bg-slate-500"><IconPlus/>Añadir componente</Button>
+        <div class="px-4 mb-2 w-full flex flex-row">
+          <Dialog>
+            <template v-slot:button><IconPlus/>Añadir componente</template>
+            <template v-slot:title>Añadir componente</template>
+            <template v-slot:form>
+              <Autocomplete :options="componentOptions" v-model:value="selectedComponentId"></Autocomplete>
+              <p class="h-52"></p>
+              <Button @click="addComponent(selectedComponentId)">Añadir</Button>
+            </template>
+          </Dialog>
         </div>
         <div class="card-container">
-          <div v-for="component in components" class="card">
+          <div v-for="component in productComponents" class="card">
             <p><b>ComponentID: {{ component.componentid }}</b></p>
             <p>Name: {{ component.componentname }}</p>
             <p>Type: {{ component.componenttype }}</p>
@@ -89,7 +97,14 @@ const productId = route.params.id
 
 // Fetch product by id and its components
 const { data : product } = await useFetch('http://localhost:3001/products/id/' + productId, {headers: headers})
-const { data : components } = await useFetch('http://localhost:3001/products/' + productId + '/components', {headers: headers})
+const { data : productComponents } = await useFetch('http://localhost:3001/products/' + productId + '/components', {headers: headers})
+
+const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
+const componentOptions = components.value.map(item => ({
+  text: `${item.brand} ${item.model}`,
+  value: item.id
+}))
+const selectedComponentId = ref('1')
 
 const productFormData = ref({
   id: product.value.id,
@@ -101,12 +116,21 @@ const productFormData = ref({
   image: product.value.image
 })
 
+const addComponent = async (componentId) => {
+  const result = await useFetch('http://localhost:3001/products/' + productId + '/components/' + componentId, {
+    method: 'post',
+    headers: headers
+  })
+  const id = result.data._rawValue.rows[0].id
+  console.log(result)
+}
+
 const removeComponent = async (componentId) => {
   await useFetch('http://localhost:3001/products/' + productId + '/components/' + componentId, {
     method: 'delete',
     headers: headers
   })
-  components.value = components.value.filter(component => component.componentid !== componentId);
+  productComponents.value = productComponents.value.filter(component => component.componentid !== componentId);
 }
 
 </script>
