@@ -36,7 +36,6 @@
       </div>
       <!-- Ajustes se gestiona en otra página -->
     </div>
-    <p>Token: {{ token }}</p>
   </Main>
 </template>
 
