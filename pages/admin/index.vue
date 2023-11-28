@@ -179,6 +179,10 @@ definePageMeta({
   ],
 })
 
+// Access backend
+const appConfig = useAppConfig()
+console.log(appConfig.backendEndpoint)
+
 // Get token and set headers for queries
 import { useUserStore } from "~/stores"
 const store = useUserStore()
