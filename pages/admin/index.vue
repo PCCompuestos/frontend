@@ -179,10 +179,6 @@ definePageMeta({
   ],
 })
 
-// Access backend
-const appConfig = useAppConfig()
-console.log(appConfig.api)
-
 // Get token and set headers for queries
 import { useUserStore } from "~/stores"
 const store = useUserStore()
@@ -196,6 +192,9 @@ watch(selected, (newValue) => {
   store.setAdminSelected(newValue)
 })
 
+// Access backend
+const api = useAppConfig().api
+
 // Icons
 import { IconPlus, IconCreditCard } from '@tabler/icons-vue';
 
@@ -206,7 +205,7 @@ import { IconPlus, IconCreditCard } from '@tabler/icons-vue';
 // ██║░░░░░██║░░██║╚█████╔╝██████╔╝╚██████╔╝╚█████╔╝░░░██║░░░██████╔╝
 // ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░╚═════╝░░╚════╝░░░░╚═╝░░░╚═════╝░
 
-const { data: products } = await useFetch('http://localhost:3001/products', {headers: headers})
+const { data: products } = await useFetch(api + '/products', {headers: headers})
 
 const productFormData = ref({
   id: '',
@@ -228,7 +227,7 @@ const filteredProducts = computed(() => {
 })
 
 async function addProduct(){
-  let result = await useFetch('http://localhost:3001/products', {
+  let result = await useFetch(api + '/products', {
     method: 'post',
     headers: headers,
     body: {
@@ -252,7 +251,7 @@ async function addProduct(){
 }
 
 async function editProduct(product) {
-  let result = await useFetch('http://localhost:3001/products/' + product.id, {
+  let result = await useFetch(api + '/products/' + product.id, {
     method: 'put',
     headers: headers,
     body: {
@@ -272,7 +271,7 @@ async function editProduct(product) {
 }
 
 async function removeProduct(id) {
-  await useFetch('http://localhost:3001/products/' + id, {
+  await useFetch(api + '/products/' + id, {
     method: 'delete',
     headers: headers
   })
@@ -287,7 +286,7 @@ async function removeProduct(id) {
 // ╚█████╔╝╚█████╔╝██║░╚═╝░██║██║░░░░░╚█████╔╝██║░╚███║███████╗██║░╚███║░░░██║░░░██████╔╝
 // ░╚════╝░░╚════╝░╚═╝░░░░░╚═╝╚═╝░░░░░░╚════╝░╚═╝░░╚══╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚═════╝░
 
-const { data: components} = await useFetch('http://localhost:3001/components', {headers: headers})
+const { data: components} = await useFetch(api + '/components', {headers: headers})
 
 const componentFormData = ref({
   id: '',
@@ -316,7 +315,7 @@ const filteredComponents = computed(() => {
 })
 
 async function addComponent(){
-  let result = await useFetch('http://localhost:3001/components', {
+  let result = await useFetch(api + '/components', {
     method: 'post',
     headers: headers,
     body: {
@@ -339,7 +338,7 @@ async function addComponent(){
 }
 
 async function editComponent(component) {
-  let result = await useFetch('http://localhost:3001/components/' + component.id, {
+  let result = await useFetch(api + '/components/' + component.id, {
     method: 'put',
     headers: headers,
     body: {
@@ -359,7 +358,7 @@ async function editComponent(component) {
 
 // No se gestiona que pueda estar incluida en alguna relación por lo que no se puede eliminar realmente
 async function removeComponent(id) {
-  await useFetch('http://localhost:3001/components/' + id, {
+  await useFetch(api + '/components/' + id, {
     method: 'delete',
     headers: headers
   })
@@ -373,7 +372,7 @@ async function removeComponent(id) {
 // ╚█████╔╝██║░░██║██████╔╝███████╗██║░░██║██████╔╝
 // ░╚════╝░╚═╝░░╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░
 
-const { data: orders } = await useFetch('http://localhost:3001/orders', {headers: headers})
+const { data: orders } = await useFetch(api + '/orders', {headers: headers})
 const orderSearch = ref('')
 
 const filteredOrders = computed(() => {
@@ -385,7 +384,7 @@ const filteredOrders = computed(() => {
 })
 
 async function updateOrderStatus(id, status) {
-  await useFetch('http://localhost:3001/orders/' + id + '/setStatus', {
+  await useFetch(api + '/orders/' + id + '/setStatus', {
     method: 'put',
     headers: headers,
     body: {
@@ -396,7 +395,7 @@ async function updateOrderStatus(id, status) {
 }
 
 async function removeOrder(id) {
-  await useFetch('http://localhost:3001/orders/' + id, {
+  await useFetch(api + '/orders/' + id, {
     method: 'delete',
     headers: headers
   })
@@ -410,7 +409,7 @@ async function removeOrder(id) {
 // ╚██████╔╝██████╔╝███████╗██║░░██║██████╔╝
 // ░╚═════╝░╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░
 
-const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+const { data: users } = await useFetch(api + '/users', {headers: headers})
 const userSearch = ref('')
 
 const filteredUsers = computed(() => {
@@ -421,7 +420,7 @@ const filteredUsers = computed(() => {
 })
 
 async function convertToAdmin(user) {
-  let result = await useFetch('http://localhost:3001/users/' + user.id, {
+  let result = await useFetch(api + '/users/' + user.id, {
     method: 'put',
     headers: headers,
     body: {
@@ -438,7 +437,7 @@ async function convertToAdmin(user) {
 }
 
 async function removeUser(id) {
-  await useFetch('http://localhost:3001/users/' + id, {
+  await useFetch(api + '/users/' + id, {
     method: 'delete',
     headers: headers
   })

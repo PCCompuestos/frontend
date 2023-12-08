@@ -46,7 +46,10 @@ const store = useUserStore()
 const productStatus = ref()
 const quantity = ref(1)
 
-let producto = await useFetch('http://localhost:3001/products/' + route.params.id)
+// Access backend
+const api = useAppConfig().api
+
+let producto = await useFetch(api + '/products/' + route.params.id)
 let productData = producto.data._value
 // console.log(producto)
 // if (producto.status._value == "success") {

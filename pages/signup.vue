@@ -16,6 +16,9 @@
 </template>
 
 <script setup>
+// Access backend
+const api = useAppConfig().api
+
 const formData = ref({
   name: '',
   password: '',
@@ -24,7 +27,7 @@ const formData = ref({
 })
 
 async function signup() {
-  let result = await useFetch('http://localhost:3001/users', {
+  let result = await useFetch(api + '/users', {
     method: 'post',
     body: {
       name: formData.value.name,

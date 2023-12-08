@@ -23,6 +23,9 @@
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 
+// Access backend
+const api = useAppConfig().api
+
 const formData = ref({
   email: '',
   password: ''
@@ -31,7 +34,7 @@ const formData = ref({
 const loginStatus = ref()
 
 async function login() {
-  let result = await useFetch('http://localhost:3001/users/login', {
+  let result = await useFetch(api + '/users/login', {
     method: 'post',
     body: {
       email: formData.value.email,

@@ -63,9 +63,10 @@
 </template>
 
 <script setup>
-import { IconSearch } from '@tabler/icons-vue';
+// Access backend
+const api = useAppConfig().api
 
-// const { data: products } = await useFetch('http://localhost:3001/products')
+// const { data: products } = await useFetch(api + '/products')
 const cpuValue = ref('Intel Core i7')
 const ramValue = ref('DDR3 Kingston HyperX 8GB DDR3')
 const graphicsValue = ref('NVIDIA GeForce RTX 3060 Ti')
@@ -102,7 +103,7 @@ let products1_3
 // Function that fetches products from the API and stores 
 // the first 3 in the products1_3 variable slicing the array
 // async function fetchProducts() {
-let result = await useFetch('http://localhost:3001/products')
+let result = await useFetch(api + '/products')
 
 if (result.status._value == "success") {
   const dataValue = result.data._value
@@ -115,7 +116,7 @@ if (result.status._value == "success") {
 
 const resultSearch = ref('')
 async function search() {
-  const { data } = await useFetch('http://localhost:3001/products/search', {
+  const { data } = await useFetch(api + '/products/search', {
     method: 'post',
     body: {
       cpu: cpuValue.value,

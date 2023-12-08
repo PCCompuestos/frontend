@@ -53,6 +53,9 @@ definePageMeta({
   ],
 })
 
+// Access backend
+const api = useAppConfig().api
+
 // Get token and set headers for queries
 import { useUserStore } from "~/stores"
 const store = useUserStore()
@@ -68,7 +71,7 @@ watch(selected, (newValue) => {
 })
 
 // Fetch components
-//const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
+//const { data: components } = await useFetch(api + '/components', {headers: headers})
 const components = ref('sdf')
 
 const productFormData = ref({

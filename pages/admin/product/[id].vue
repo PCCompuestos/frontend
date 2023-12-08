@@ -75,6 +75,9 @@ definePageMeta({
   ],
 })
 
+// Access backend
+const api = useAppConfig().api
+
 // Icons
 import { IconPlus } from '@tabler/icons-vue';
 
@@ -96,14 +99,17 @@ watch(selected, (newValue) => {
 const productId = route.params.id
 
 // Fetch product by id and its components
-const { data : product } = await useFetch('http://localhost:3001/products/id/' + productId, {headers: headers})
-const { data : productComponents } = await useFetch('http://localhost:3001/products/' + productId + '/components', {headers: headers})
+const { data : product } = await useFetch(api + '/products/id/' + productId, {headers: headers})
 
-const { data: components } = await useFetch('http://localhost:3001/components', {headers: headers})
+const { data : productComponents } = await useFetch(api + '/products/' + productId + '/components', {headers: headers})
+
+const { data: components } = await useFetch(api + '/components', {headers: headers})
+
 const componentOptions = components.value.map(item => ({
   text: `${item.brand} ${item.model}`,
   value: item.id
 }))
+
 const selectedComponentId = ref('1')
 
 const productFormData = ref({
@@ -117,7 +123,7 @@ const productFormData = ref({
 })
 
 const addComponent = async (componentId) => {
-  const result = await useFetch('http://localhost:3001/products/' + productId + '/components/' + componentId, {
+  const result = await useFetch(api + '/products/' + productId + '/components/' + componentId, {
     method: 'post',
     headers: headers
   })
@@ -126,7 +132,7 @@ const addComponent = async (componentId) => {
 }
 
 const removeComponent = async (componentId) => {
-  await useFetch('http://localhost:3001/products/' + productId + '/components/' + componentId, {
+  await useFetch(api + '/products/' + productId + '/components/' + componentId, {
     method: 'delete',
     headers: headers
   })

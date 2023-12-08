@@ -56,6 +56,9 @@ definePageMeta({
   ],
 })
 
+// Access backend
+const api = useAppConfig().api
+
 // Get token and set headers for queries
 import { useUserStore } from "~/stores"
 const store = useUserStore()
@@ -81,7 +84,7 @@ const productFormData = ref({
 })
 
 async function addProduct(){
-  let result = await useFetch('http://localhost:3001/products', {
+  let result = await useFetch(api + '/products', {
     method: 'post',
     headers: headers,
     body: {

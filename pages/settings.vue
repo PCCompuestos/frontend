@@ -51,13 +51,16 @@
 </template>
 
 <script setup>
-
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
 const user = store.user
 const headers = {'Authorization': `Bearer ${token}`}
-const { data: usuario } = await useFetch('http://localhost:3001/users/' + user.id, {headers: headers})
+
+// Access backend
+const api = useAppConfig().api
+
+const { data: usuario } = await useFetch(api + '/users/' + user.id, {headers: headers})
 
 const formData1 = ref({
   password: '',
@@ -92,7 +95,7 @@ async function passwordMatches(password) {
 async function updateUsername(newUsername){
   console.log(newUsername);
   // console.log(users._rawValue[userIndex].id)
-  let result = await useFetch('http://localhost:3001/users/' + user.id + '/setName', {
+  let result = await useFetch(api + '/users/' + user.id + '/setName', {
     method: 'put',
     headers: headers,
     body: {
@@ -136,7 +139,7 @@ async function handleUsernameChange() {
 }
 
 async function updatePassword(newPassword){
-  let result = await useFetch('http://localhost:3001/users/' + user.id + '/setPassword', {
+  let result = await useFetch(api + '/users/' + user.id + '/setPassword', {
     method: 'put',
     headers: headers,
     body: {

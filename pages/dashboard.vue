@@ -47,6 +47,9 @@ definePageMeta({
   ],
 })
 
+// Access backend
+const api = useAppConfig().api
+
 import { useUserStore } from "~/stores"
 const store = useUserStore()
 const token = store.token
@@ -56,9 +59,9 @@ const headers = {'Authorization': `Bearer ${token}`}
 const selected = ref('info')
 
 // Consulta para almacenar en "orders" los pedidos del usuario loggeado
-const { data: orders } = await useFetch('http://localhost:3001/orders/' + user.id, {headers: headers})
+const { data: orders } = await useFetch(api + '/orders/' + user.id, {headers: headers})
 
 // console.log(orders)
-/*const { data: users } = await useFetch('http://localhost:3001/users', {headers: headers})
+/*const { data: users } = await useFetch(api + '/users', {headers: headers})
 console.log(users)*/
 </script>
