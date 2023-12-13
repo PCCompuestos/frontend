@@ -11,4 +11,10 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
   ],
+  nitro: {
+    prerender: {
+      failOnError: false, // Added because of non latin characters in urls
+    }
+  },
+  ssr: false
 })
