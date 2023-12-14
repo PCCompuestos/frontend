@@ -151,7 +151,7 @@
             <p>Email: {{ user.email }}</p>
             <p>Address: {{ user.address }}</p>
             <p>IsAdmin: {{ user.isadmin }}</p>
-            <Button @click="convertToAdmin(user)">Convertir en admin</Button>
+            <Button @click="convertToAdmin(user); user.isadmin = true">Convertir en admin</Button>
             <Button @click="removeUser(user.id)" class="bg-red-500">Eliminar usuario</Button>
           </div>
           <p v-if="users.length == 0" class="mx-4">No hay usuarios.</p>
@@ -420,7 +420,7 @@ const filteredUsers = computed(() => {
 })
 
 async function convertToAdmin(user) {
-  let result = await useFetch(api + '/users/' + user.id, {
+  let result = await useFetch(api + '/users/' + user.id + '/setAdmin', {
     method: 'put',
     headers: headers,
     body: {
