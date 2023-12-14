@@ -240,9 +240,9 @@ async function addProduct(){
     }
   })
   if (result.status._value == "success") {
-    ////alert('Producto añadido exitosamente')
+    alert('Producto añadido exitosamente')
   } else {
-    ////alert('Error')
+    alert('Error')
   }
   // Set id
   productFormData.value.id = result.data._rawValue.rows[0].id
@@ -264,9 +264,9 @@ async function editProduct(product) {
     }
   })
   if (result.status._value == "success") {
-    ////alert('Éxito')
+    alert('Éxito')
   } else {
-    ////alert('Error')
+    alert('Error')
   }
 }
 
@@ -327,9 +327,9 @@ async function addComponent(){
     }
   })
   if (result.status._value == "success") {
-    ////alert('Componente añadido exitosamente')
+    alert('Componente añadido exitosamente. Puedes cerrar la ventana modal.')
   } else {
-    ////alert('Error')
+    alert('Error')
   }
   // Set id
   componentFormData.value.id = result.data._rawValue.rows[0].id
@@ -350,9 +350,9 @@ async function editComponent(component) {
     }
   })
   if (result.status._value == "success") {
-    ////alert('Éxito')
+    alert('Éxito')
   } else {
-    ////alert('Error')
+    alert('Error')
   }
 }
 
@@ -432,7 +432,7 @@ async function convertToAdmin(user) {
     }
   })
   if (result.status._value == "success") {
-    ////alert('Usuario convertido a administrador')
+    alert('Usuario convertido a administrador')
   }
 }
 
