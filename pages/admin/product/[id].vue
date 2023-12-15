@@ -40,7 +40,7 @@
             <InputText v-model:value="productFormData.url" name="url"/><br>
             <label for="image">Image:</label><br>
             <InputText v-model:value="productFormData.image" name="image"/><br>
-            <Button @click="addProduct()" class="bg-slate-500">Editar producto</Button>
+            <Button @click="editProduct()" class="bg-slate-500">Editar producto</Button>
           </div>
         </div>
         <div class="px-4 mb-2 w-full flex flex-row">
@@ -122,13 +122,36 @@ const productFormData = ref({
   image: product.value.image
 })
 
+async function editProduct(product) {
+  let result = await useFetch(api + '/products/' + productId, {
+    method: 'put',
+    headers: headers,
+    body: {
+      name: productFormData.value.name,
+      description: productFormData.value.description,
+      quantity: productFormData.value.quantity,
+      price: productFormData.value.price,
+      url: productFormData.value.url,
+      image: productFormData.value.image
+    }
+  })
+  if (result.status._value == "success") {
+    alert('Éxito')
+  } else {
+    alert('Error')
+  }
+}
+
 const addComponent = async (componentId) => {
   const result = await useFetch(api + '/products/' + productId + '/components/' + componentId, {
     method: 'post',
     headers: headers
   })
-  const id = result.data._rawValue.rows[0].id
-  console.log(result)
+  //const id = result.data._rawValue.rows[0].id
+  if (result.status._rawValue == "success") {
+    alert('Componente añadido con éxito')
+    location.reload()
+  }
 }
 
 const removeComponent = async (componentId) => {
